@@ -8,9 +8,11 @@
 #include "stdbool.h"
 
 // вспомогательной вывод формы bigInt в памяти
-void printBigInt(bigInt *number) {
-    for (int i = 0; i < number -> size; i++) {
-        printf("%d", *(number -> numberPtr + i));
+void printBigInt(bigInt *this) {
+    if (this -> isPositive) printf("+");
+    else printf("-");
+    for (int i = this -> size - 1; i > -1; i--) {
+        printf("%d", *(this -> numberPtr + i));
     }
     printf("\n");
 }
@@ -129,7 +131,8 @@ bigInt *plusMinus(bigInt *firstNumber, bigInt *secondNumber){
         longerNumber = secondNumber;
         shorterNumber = firstNumber;
     }
-    if (longerNumber -> isPositive == shorterNumber -> isPositive) return add(longerNumber, shorterNumber);
+    bigInt *result;
+    if (longerNumber -> isPositive == shorterNumber -> isPositive) result = add(longerNumber, shorterNumber);
     else result = subtract(longerNumber, shorterNumber);
     result -> isPositive = longerNumber -> isPositive;
     return result;
