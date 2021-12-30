@@ -37,10 +37,6 @@ void printStats(bigInt *number) {
     printf("\n");
 }
 
-void appendString(int *string, char item) {
-    string = realloc(string, (strlen(string) + 1) * sizeof(int));
-    *(string + strlen(string)) = item;
-}
 
 void append(bigInt *this, int item) {
     this -> size += 1;
@@ -187,7 +183,6 @@ bigInt *add(bigInt *firstNumber, bigInt *secondNumber) {
         *(bigIntRes -> numberPtr + bigIntRes -> size - 1 ) = inMem;
     }
 
-
     return bigIntRes;
 }
 
@@ -284,7 +279,6 @@ bigInt *divisionProcess(bigInt *numerator, bigInt *denominator, bool onlyRemains
     modRes -> isPositive = true;
     modRes -> numberPtr = (int*) malloc(0 * sizeof(int));
 
-    int initialComp = compareTo(numerator, denominator);
     divRes -> size = 0;
     divRes -> isPositive = numerator -> isPositive && denominator -> isPositive;
     divRes -> numberPtr = (int*) malloc(0 * sizeof(int));
@@ -332,10 +326,44 @@ bigInt *modResult(bigInt *numerator, bigInt *denominator) {
     return res;
 }
 
+int myPow(int x,int n)
+{
+    int i;
+    int number = 1;
 
-int *toBigString(bigInt *this ) {
-    int *strPtr = (int *) malloc(0 * sizeof(char));
-    for (int index = this -> size - 1; index > -1; index++) appendString(strPtr, ((char) *(this -> numberPtr + index)));
-    return strPtr;
+    for (i = 0; i < n; ++i)
+        number *= x;
+
+    return(number);
+}
+
+int toInt(bigInt *this) {
+    if (this -> size >= 255) {
+        return 0;
+    } else {
+        int result = 0;
+        for (int index = 0; index < this -> size; index++) {
+            int digit = *(this -> numberPtr + index);
+            result += digit * myPow(10, index);
+        }
+        if (!this -> isPositive) result *= -1;
+        return result;
+    }
+}
+
+char *toString(bigInt *this ) {
+    char *result;
+    int i = 1;
+    result = (char*)malloc(sizeof(char));
+    if (this -> isPositive) result[0] = '\0';
+    else result[0] = '-';
+
+    for (int index = this -> size - 1; index > - 1; index--) {
+        result = (char*) realloc(result, (i + 1) * sizeof(char));
+        result[i] = (char) (*(this->numberPtr + index) + '0');
+        i++;
+    }
+    result[i] = '\0';
+    return result;
 }
 

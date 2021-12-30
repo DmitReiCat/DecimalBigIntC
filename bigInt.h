@@ -20,9 +20,10 @@ bigInt *plus(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *multiply(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *myDiv(bigInt *numerator, bigInt *denominator);
 bigInt *modResult(bigInt *numerator, bigInt *denominator);
-int *toBigString(bigInt *this );
+char *toString(bigInt *this );
 int compareTo(bigInt *this, bigInt *other);
 bigInt *add(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *subtract(bigInt *firstNumber, bigInt *secondNumber);
+int toInt(bigInt *this);
 
 #endif //UNTITLED_BIGINT_H
