@@ -13,8 +13,7 @@ typedef struct BigInteger {
 
 
 bigInt *constructBigInt(char str[]);
-void printBigInt(bigInt *this);
-void printStats(bigInt *number);
+void printStats(bigInt *this);
 bigInt *minus(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *plus(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *multiply(bigInt *firstNumber, bigInt *secondNumber);

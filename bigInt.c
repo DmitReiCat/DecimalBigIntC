@@ -7,34 +7,24 @@
 #include <stdlib.h>
 #include "stdbool.h"
 
-// вспомогательной вывод формы bigInt в памяти
-void printBigInt(bigInt *this) {
-    if (this -> isPositive) printf("+");
-    else printf("-");
-    for (int i = this -> size - 1; i > -1; i--) {
-        printf("%d", *(this -> numberPtr + i));
-    }
-    printf("\n");
-}
 
 // вспомогательной вывод адресов и значений у bigInt
-void printStats(bigInt *number) {
+void printStats(bigInt *this) {
     printf("Adresses\n");
     printf("ptr= %p size= %p isPositive= %p\n",
-           number->numberPtr,
-           &number->size,
-           &number->isPositive
+           this->numberPtr,
+           &this->size,
+           &this->isPositive
     );
     printf("Values\n");
     printf("ptr= %p size= %d isPositive= %d\n",
-           number->numberPtr,
-           number->size,
-           number->isPositive
+           this->numberPtr,
+           this->size,
+           this->isPositive
     );
     printf("Number\n");
-    printf("sign = %d\n", number -> isPositive);
-    printBigInt(number);
-    printf("\n");
+    printf("sign = %d\n", this -> isPositive);
+    printf("%s\n", toString(this));
 }
 
 
