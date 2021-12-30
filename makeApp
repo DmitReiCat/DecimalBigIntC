@@ -1,0 +1,44 @@
+#Исходные файлы, необходимые для сборки библиотеки
+OBJS = heap.c \
+
+#Вызываемые приложения
+AR = riscv64-unknown-elf-ar.exe
+CC = riscv64-unknown-elf-gcc.exe
+# Файл библиотеки
+MYLIBNAME = lib.a
+# Параметры компиляции
+CFLAGS= -march=rv64iac -mabi=lp64 -O1
+# Включаемые файлы следует искать в текущем каталоге
+INCLUDES+= -I .
+# Make должна искать файлы *.h и *.c в текущей директории
+vpath %.h .
+vpath %.c .
+# Построение объектного файла из исходного текста
+# $< = %.c
+# $@ = %.o
+%.o: %.c
+	$(CC) -MD $(CFLAGS) $(INCLUDES) -c $< -o $@
+# Чтобы достичь цели "all", требуется построить библиотеку
+all: $(MYLIBNAME)
+
+$(MYLIBNAME): heap.o
+	$(AR) -rsc $@ $^
+	timeout 3
+# Файлы для сборки исполнимого файла
+OBJS = Main.c \
+lib.a
+#Вызываемые приложения
+CC = riscv64-unknown-elf-gcc.exe
+# Параметры компиляции
+CFLAGS= -march=rv64iac -mabi=lp64 -O1 --save-temps -pedantic -Wall -Wextra
+# Включаемые файлы следует искать в текущем каталоге
+INCLUDES+= -I .
+# Make должна искать файлы *.c и *.a в текущей директории
+vpath %.c .
+vpath %.a .
+# Чтобы достичь цели "all", требуется собрать исполнимый файл
+all: a.out
+# Сборка исполнимого файла и удаление мусора
+a.out: $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) $^
+	del *.o *.i *.s *.d

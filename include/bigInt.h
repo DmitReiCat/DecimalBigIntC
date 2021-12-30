@@ -1,7 +1,3 @@
-//
-// Created by t3col on 29-Dec-21.
-//
-
 #ifndef UNTITLED_BIGINT_H
 #define UNTITLED_BIGINT_H
 #include "stdbool.h"
@@ -24,5 +20,6 @@ int compareTo(bigInt *this, bigInt *other);
 bigInt *add(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *subtract(bigInt *firstNumber, bigInt *secondNumber);
 int toInt(bigInt *this);
+void clear(bigInt *this);
 
 #endif //UNTITLED_BIGINT_H
