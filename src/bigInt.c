@@ -335,9 +335,7 @@ bigInt *divisionProcess(bigInt *numerator, bigInt *denominator, bool onlyRemains
         return modRes;
     } else {
         divRes -> isPositive = numerator -> isPositive == denominator -> isPositive;
-        printBigInt(divRes);
         reverse(divRes);
-        printBigInt(divRes);
         free(modRes);
         return divRes;
     }
