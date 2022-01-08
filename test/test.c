@@ -7,8 +7,6 @@ void plusMinusTests() {
     bigInt *firstNumber = constructBigInt("-690");
     bigInt *secondNumber = constructBigInt("-79");
     bigInt *result = plus(firstNumber, secondNumber);
-    int a = 3;
-    a++;
 
     assert(-769 == toInt(result));
     clear(secondNumber);
