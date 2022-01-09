@@ -8,14 +8,14 @@ typedef struct BigInteger {
 } bigInt;
 
 
-bigInt *constructBigInt(char str[]);
+bigInt *constructBigIntFromStr(char string[]);
 void printStats(bigInt *this);
 bigInt *minus(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *plus(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *multiply(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *myDiv(bigInt *numerator, bigInt *denominator);
 bigInt *modResult(bigInt *numerator, bigInt *denominator);
-char *toString(bigInt *this );
+char *bigIntToString(bigInt *this );
 int compareTo(bigInt *this, bigInt *other);
 bigInt *add(bigInt *firstNumber, bigInt *secondNumber);
 bigInt *subtract(bigInt *firstNumber, bigInt *secondNumber);

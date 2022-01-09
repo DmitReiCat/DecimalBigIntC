@@ -9,9 +9,11 @@ typedef struct BigInteger {
     int digitCount;
     int *numberPtr;
 } newBigInt;
-
-newBigInt* constructBigInt(char str[]);
-char* toString(newBigInt *this);
+newBigInt* constructBigIntFromInt(int integer);
+newBigInt* constructBigIntFromStr(char string[]);
+char* bigIntToString(newBigInt *this);
+int bigIntToInt(newBigInt *this);
+newBigInt *moduleAdd(newBigInt *firstNumber, newBigInt *secondNumber);
 
 
 #endif //UNTITLED_NEWBIGINT_H

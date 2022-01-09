@@ -5,15 +5,23 @@
 
 
 int main(int argc, char *argv[]) {
-//    bigInt *firstNumber = constructBigInt("-6");
-//    bigInt *secondNumber = constructBigInt("79");
+//    bigInt *firstNumber = constructBigIntFromStr("-6");
+//    bigInt *secondNumber = constructBigIntFromStr("79");
 //    printStats(firstNumber);
 //    printStats(secondNumber);
-    newBigInt *firstNumber = constructBigInt("-1234567890987654321");
+    newBigInt *firstNumber = constructBigIntFromStr("-1234567890987654321");
+//    for (int firstNumber = 0; firstNumber <= 10000; firstNumber++) {
+////        bigInt firstBigInt =
+//        printf("%s\n", (char*)firstNumber);
+//
+//
+//
+//    }
 
-    newBigInt *secondNumber = constructBigInt("0");
-    printf("%s\n", toString(firstNumber));
-    printf("%s\n", toString(secondNumber));
+
+    newBigInt *secondNumber = constructBigIntFromStr("0");
+    printf("%s\n", bigIntToString(firstNumber));
+    printf("%s\n", bigIntToString(secondNumber));
     printBigInt(firstNumber);
     printBigInt(secondNumber);
 

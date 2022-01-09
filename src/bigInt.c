@@ -21,7 +21,7 @@ void printStats(bigInt *this) {
     );
     printf("Number\n");
     printf("sign = %d\n", this -> isPositive);
-    printf("%s\n", toString(this));
+    printf("%s\n", bigIntToString(this));
 }
 
 void printBigInt(bigInt *this){
@@ -59,7 +59,7 @@ void clear(bigInt *this) {
     this -> numberPtr = (int*) malloc(0 * sizeof(int));
 }
 
-void insertFirstNumber(bigInt *this, int number) {
+void insertAndSetZeroBlock(bigInt *this, int number) {
     this -> size += 1;
     this -> numberPtr = realloc(this -> numberPtr, (this -> size) * sizeof(int));
 
@@ -90,7 +90,7 @@ void freeUp(bigInt *this) {
 
 
 /// Создание bigInt
-bigInt *constructBigInt(char str[]) {
+bigInt *constructBigIntFromStr(char str[]) {
     bigInt *bigIntRes = NULL;
     bigIntRes = (bigInt*) malloc(sizeof(bigInt));
     bigIntRes -> size = (int) strlen(str) - 1;
@@ -258,7 +258,7 @@ bigInt *multiply(bigInt *firstNumber, bigInt *secondNumber) {
     sumToAdd -> size = 0;
     sumToAdd -> numberPtr = (int*) malloc(0 * sizeof(int));
 
-    bigIntRes = constructBigInt("0");
+    bigIntRes = constructBigIntFromStr("0");
 
 
 
@@ -316,7 +316,7 @@ bigInt *divisionProcess(bigInt *numerator, bigInt *denominator, bool onlyRemains
         int comparisonRes = compareTo(modRes, denominator);
         while ((comparisonRes == -1 || comparisonRes == 0) && index != -1) {
             int digit = *(numerator -> numberPtr + index);
-            insertFirstNumber(modRes, digit);
+            insertAndSetZeroBlock(modRes, digit);
             index--;
             comparisonRes = compareTo(modRes, denominator);
         }
@@ -372,7 +372,7 @@ int toInt(bigInt *this) {
     }
 }
 
-char *toString(bigInt *this ) {
+char *bigIntToString(bigInt *this ) {
     char *result;
     int i = 1;
     result = (char*)malloc(sizeof(char));
