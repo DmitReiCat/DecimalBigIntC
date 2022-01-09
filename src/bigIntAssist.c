@@ -33,6 +33,42 @@ int blockSum(int firstBlock, int secondBlock, int *inMem) {
 }
 
 
+///Difference if two blocks with underflow in inMem
+int blockSubtraction(int firstBlock, int secondBlock, int *inMem) {
+    int tempDiff = firstBlock - secondBlock - *inMem;
+    if (tempDiff < 0) {
+        *inMem = 1;
+        return tempDiff + 100000000;
+    } else {
+        *inMem = 0;
+        return tempDiff;
+    }
+}
+
+
+/// deletes extra zeros without changing digitCount
+void deleteExtraZeroBlocks(newBigInt *this) {
+    int firstNonZeroBlock = 0;
+    while (firstNonZeroBlock < this->size - 1 && *(this->numberPtr + firstNonZeroBlock) == 0) firstNonZeroBlock++;
+    for (int blockIndex = 0; blockIndex < firstNonZeroBlock; blockIndex++) {
+        *(this->numberPtr + blockIndex) =  *(this->numberPtr + blockIndex + firstNonZeroBlock);
+    }
+    this->size -= firstNonZeroBlock;
+    this->digitCount -= 8 * firstNonZeroBlock;
+    this->numberPtr = realloc(this->numberPtr, (this->size) * sizeof(int));
+}
+
+/// deletes extra zeros and changes digitCount
+//void deleteExtraZeroBlocks(newBigInt *this, newBigInt *reference) {
+//    int blocksToCount = deleteExtraZeroBlocks(this);
+//    int digitsCounted = 0;
+//    for (int blockIndex = 0; blockIndex < blocksToCount; blockIndex++) {
+//        digitsCounted += digitCount(*(reference->numberPtr + blockIndex));
+//    }
+//    this->digitCount -= digitsCounted;
+//}
+
+
 /// creates and sets new zero block with and an offset of the rest blocks
 void insertAndSetZeroBlock(newBigInt *this, int number) {
     this -> size += 1;

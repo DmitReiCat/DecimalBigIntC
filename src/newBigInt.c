@@ -43,7 +43,6 @@ newBigInt* constructBigIntFromInt(int integer) {
 }
 
 
-
 /// constructs bigInt from string
 newBigInt* constructBigIntFromStr(char string[]) {
     newBigInt *bigIntRes = NULL;
@@ -86,12 +85,8 @@ newBigInt* constructBigIntFromStr(char string[]) {
 }
 
 
-
-
-
-
 /// Sum of numbers' modules
-newBigInt *moduleAdd(newBigInt *firstNumber, newBigInt *secondNumber) {
+newBigInt *moduleSum(newBigInt *firstNumber, newBigInt *secondNumber) {
     newBigInt *bigIntRes = NULL;
     bigIntRes = (newBigInt*) malloc(sizeof(newBigInt));
     int inMem = 0;
@@ -99,24 +94,56 @@ newBigInt *moduleAdd(newBigInt *firstNumber, newBigInt *secondNumber) {
     bigIntRes->size = firstNumber->size ;
     bigIntRes->isPositive = firstNumber->isPositive ;
     bigIntRes->numberPtr = (int*) malloc((bigIntRes -> size) * sizeof(int));
+    bigIntRes->digitCount = 0;
     int blockDiff = firstNumber->size - secondNumber->size;
 
     for (int blockIndex = secondNumber->size - 1; blockIndex >= 0; blockIndex--) {
         int firstBlock = *(firstNumber->numberPtr + (blockDiff + blockIndex));
         int secondBlock = *(secondNumber->numberPtr + blockIndex);
         *(bigIntRes->numberPtr + (blockDiff + blockIndex)) = blockSum(firstBlock, secondBlock, &inMem);
+        bigIntRes->digitCount += 8;
     }
     for (int blockIndex = blockDiff - 1; blockIndex >= 0; blockIndex--) {
         int block = *(firstNumber->numberPtr + blockIndex);
         *(bigIntRes->numberPtr + blockIndex) = blockSum(block, 0, &inMem);
+        bigIntRes->digitCount += 8;
     }
-    bigIntRes->digitCount = firstNumber->digitCount;
     if (inMem != 0) {
         insertToZeroBlock(bigIntRes, inMem);
-        bigIntRes->digitCount += 1;
     }
+    bigIntRes->digitCount -= 8 - digitCount(*(bigIntRes->numberPtr));
     return bigIntRes;
 }
+
+
+/// Difference of numbers' modules
+newBigInt *moduleDiff(newBigInt *firstNumber, newBigInt *secondNumber) {
+    newBigInt *bigIntRes = NULL;
+    bigIntRes = (newBigInt*) malloc(sizeof(newBigInt));
+    int inMem = 0;
+
+    bigIntRes->size = firstNumber->size ;
+    bigIntRes->isPositive = firstNumber->isPositive ; //TODO do i really need it here (+ in in sum)
+    bigIntRes->numberPtr = (int*) malloc((bigIntRes -> size) * sizeof(int));
+    bigIntRes->digitCount = 0;
+    int blockDiff = firstNumber->size - secondNumber->size;
+
+    for (int blockIndex = secondNumber->size - 1; blockIndex >= 0; blockIndex--) {
+        int firstBlock = *(firstNumber->numberPtr + (blockDiff + blockIndex));
+        int secondBlock = *(secondNumber->numberPtr + blockIndex);
+        *(bigIntRes->numberPtr + (blockDiff + blockIndex)) = blockSubtraction(firstBlock, secondBlock, &inMem);
+        bigIntRes->digitCount += 8;
+    }
+    for (int blockIndex = blockDiff - 1; blockIndex >= 0; blockIndex--) {
+        int block = *(firstNumber->numberPtr + blockIndex);
+        *(bigIntRes->numberPtr + blockIndex) = blockSubtraction(block, 0, &inMem);
+        bigIntRes->digitCount += 8;
+    }
+    deleteExtraZeroBlocks(bigIntRes);
+    bigIntRes->digitCount -= 8 - digitCount(*(bigIntRes->numberPtr));
+    return bigIntRes;
+}
+
 
 /// converts bigint to string
 char* bigIntToString(newBigInt *this) {
@@ -146,6 +173,7 @@ char* bigIntToString(newBigInt *this) {
     return result;
 }
 
+
 /// converts bigint to string
 int bigIntToInt(newBigInt *this) {
     //TODO comparing for safe conversion
@@ -167,6 +195,7 @@ int bigIntToInt(newBigInt *this) {
     if (!this->isPositive) result *= -1;
     return result;
 }
+
 
 /// frees memory taken by bigInt
 void freeBigInt(newBigInt *this) {
