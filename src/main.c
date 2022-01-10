@@ -1,49 +1,51 @@
 #include <stdio.h>
+#include <stdlib.h>
 //#include "../include/bigInt.h"
 #include "../include/newBigInt.h"
 #include "../include/bigIntAssist.h"
 
+void sum(char *ipath, char *opath) {
+    FILE *ifptr;
+    FILE *ofptr;
+
+
+    if ((ifptr = fopen(ipath, "r")) == NULL){
+        printf("Error! opening file");
+        exit(1);
+    }
+    if ((ofptr = fopen(opath, "w")) == NULL){
+        printf("Error! opening file");
+        exit(1);
+    }
+
+    newBigInt *sumRes = constructBigIntFromInt(0);
+    while (!feof(ifptr)) {
+        int number;
+        fscanf(ifptr, "%d", &number);
+        newBigInt *bigNum = constructBigIntFromInt(number);
+        sumRes = plus(sumRes, bigNum, true);
+    }
+
+    printf("\n sumRes= %s", bigIntToString(sumRes));
+    fprintf(ofptr, "%s", bigIntToString(sumRes));
+    freeBigInt(sumRes);
+    fclose(ifptr);
+    fclose(ofptr);
+}
+
 
 int main(int argc, char *argv[]) {
-//    bigInt *firstNumber = constructBigIntFromStr("-6");
-//    bigInt *secondNumber = constructBigIntFromStr("79");
-//    printStats(firstNumber);
-//    printStats(secondNumber);
-    newBigInt *firstNumber = constructBigIntFromStr("-1234567890987654321");
-//    for (int firstNumber = 0; firstNumber <= 10000; firstNumber++) {
-////        bigInt firstBigInt =
-//        printf("%s\n", (char*)firstNumber);
-//
-//
-//
-//    }
-
-
-    newBigInt *secondNumber = constructBigIntFromStr("0");
-    printf("%s\n", bigIntToString(firstNumber));
-    printf("%s\n", bigIntToString(secondNumber));
-    printBigInt(firstNumber);
-    printBigInt(secondNumber);
-
-
-
-//
-//    bigInt *result = plus(firstNumber, secondNumber);
-//    printf("%d\n", toInt(result));
-//
-//
-//    if (argc == 3) {
-//        char *input = argv[1];
-//        char *output = argv[2];
-//    }
-//    else if (argc > 4) {
-//        printf("Too many arguments supplied.\n");
-//    }
-//    else {
-//        printf("Two arguments expected.\n");
-//    }
-
-
-
+    if (argc == 3) {
+        printf("summing..");
+        char *input = argv[1];
+        char *output = argv[2];
+        sum(input, output);
+    }
+    else if (argc > 4) {
+        printf("Too many arguments supplied.\n");
+    }
+    else {
+        printf("Two arguments expected.\n");
+    }
     return 0;
 }

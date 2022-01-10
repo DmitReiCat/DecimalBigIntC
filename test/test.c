@@ -50,7 +50,7 @@ void constructAndToStringTest() {
 void assertModuleSumFromInt(int firstNumber, int secondNumber) {
     newBigInt *firstBigNum = constructBigIntFromInt(firstNumber);
     newBigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    newBigInt *result = moduleSum(firstBigNum, secondBigNum);
+    newBigInt *result = moduleSum(firstBigNum, secondBigNum, true);
     printf("  //trying to %d + %d", firstNumber, secondNumber);
 //    printBigInt(result);
 //    printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
@@ -58,8 +58,6 @@ void assertModuleSumFromInt(int firstNumber, int secondNumber) {
 //    printf("result = %d, bigNum = %d", firstNumber+ secondNumber, bigIntToInt(result));
     assert(firstNumber + secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
-    freeBigInt(firstBigNum);
-    freeBigInt(secondBigNum);
     freeBigInt(result);
 }
 
@@ -73,15 +71,13 @@ void moduleSumTest() {
     // overflow from string test
     newBigInt *firstBigNum = constructBigIntFromStr("999999999999999999999999");
     newBigInt *secondBigNum = constructBigIntFromStr("999999999999999999999999");
-    newBigInt *result = moduleSum(firstBigNum, secondBigNum);
+    newBigInt *result = moduleSum(firstBigNum, secondBigNum, true);
     printf("  //trying to %s", "999999999999999999999999 x2");
     printBigInt(result);
     printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
     int preRes = strcmp("+1999999999999999999999998", bigIntToString(result));
     assert(0 == preRes);
     printf("  (yoshi!)\n");
-    freeBigInt(firstBigNum);
-    freeBigInt(secondBigNum);
     freeBigInt(result);
 
     printf("moduleSum testing successful!\n\n");
@@ -90,14 +86,12 @@ void moduleSumTest() {
 void assertModuleDiffFromInt(int firstNumber, int secondNumber) {
     newBigInt *firstBigNum = constructBigIntFromInt(firstNumber);
     newBigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    newBigInt *result = moduleDiff(firstBigNum, secondBigNum);
+    newBigInt *result = moduleDiff(firstBigNum, secondBigNum, true);
     printf("  //trying to %d - %d", firstNumber, secondNumber);
     assert(firstNumber - secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
 //    printBigInt(result);
 //    printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
-    freeBigInt(firstBigNum);
-    freeBigInt(secondBigNum);
     freeBigInt(result);
 }
 
@@ -117,26 +111,22 @@ void moduleDiffTest() {
 void assertPlusFromInt(int firstNumber, int secondNumber) {
     newBigInt *firstBigNum = constructBigIntFromInt(firstNumber);
     newBigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    newBigInt *result = plus(firstBigNum, secondBigNum);
+    newBigInt *result = plus(firstBigNum, secondBigNum, true);
     printf("  //trying to %d + %d", firstNumber, secondNumber);
     assert(firstNumber + secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
 //    printBigInt(result);
 //    printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
-    freeBigInt(firstBigNum);
-    freeBigInt(secondBigNum);
     freeBigInt(result);
 }
 
 void assertMinusFromInt(int firstNumber, int secondNumber) {
     newBigInt *firstBigNum = constructBigIntFromInt(firstNumber);
     newBigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    newBigInt *result = minus(firstBigNum, secondBigNum);
+    newBigInt *result = minus(firstBigNum, secondBigNum, true);
     printf("  //trying to %d - %d", firstNumber, secondNumber);
     assert(firstNumber - secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
-    freeBigInt(firstBigNum);
-    freeBigInt(secondBigNum);
     freeBigInt(result);
 }
 
@@ -250,7 +240,12 @@ int main() {
     listPrint(myList);
     newBigInt *bigNum = constructBigIntFromReversedList(myList);
     printBigInt(bigNum);
+    newBigInt *bigNum2 = constructBigIntFromInt(1);
+    bigNum = plus(bigNum, bigNum2, true);
+    printBigInt(bigNum);
     freeBigInt(bigNum);
+
+
 
     assistTest();
     constructAndToStringTest();

@@ -128,7 +128,7 @@ int blockMultiplication(int firstBlock, int secondBlock, int *inMem) {
 }
 
 /// Choice of actions on BigInt modules
-newBigInt* plusMinus(newBigInt *firstNumber, newBigInt *secondNumber) {
+newBigInt* plusMinus(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem) {
     newBigInt *longerNumber;
     newBigInt *shorterNumber;
     if (firstNumber->digitCount >= secondNumber->digitCount) {
@@ -139,8 +139,12 @@ newBigInt* plusMinus(newBigInt *firstNumber, newBigInt *secondNumber) {
         shorterNumber = firstNumber;
     }
     newBigInt *result;
-    if (longerNumber->isPositive == shorterNumber->isPositive) result = moduleSum(longerNumber, shorterNumber);
-    else result = moduleDiff(longerNumber, shorterNumber);
+    if (longerNumber->isPositive == shorterNumber->isPositive) result = moduleSum(longerNumber, shorterNumber, freeMem);
+    else result = moduleDiff(longerNumber, shorterNumber, freeMem);
     result->isPositive = longerNumber->isPositive;
+    if (freeMem == true) {
+        freeBigInt(firstNumber);
+        freeBigInt(secondNumber);
+    }
     return result;
 }

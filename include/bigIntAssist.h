@@ -16,7 +16,7 @@ void reverse(newBigInt *this);
 
 int blockSum(int firstBlock, int secondBlock, int *inMem);
 int blockSubtraction(int firstBlock, int secondBlock, int *inMem);
-newBigInt* plusMinus(newBigInt *firstNumber, newBigInt *secondNumber);
+newBigInt* plusMinus(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem);
 int blockMultiplication(int firstBlock, int secondBlock, int *inMem);
 
 #endif //UNTITLED_BIGINTASSIST_H

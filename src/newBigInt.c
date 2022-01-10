@@ -121,7 +121,7 @@ newBigInt* constructBigIntFromStr(char string[]) {
 
 
 /// Sum of numbers' modules
-newBigInt* moduleSum(newBigInt *firstNumber, newBigInt *secondNumber) {
+newBigInt* moduleSum(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem) {
     newBigInt *bigIntRes = NULL;
     bigIntRes = (newBigInt*) malloc(sizeof(newBigInt));
     int inMem = 0;
@@ -152,7 +152,7 @@ newBigInt* moduleSum(newBigInt *firstNumber, newBigInt *secondNumber) {
 
 
 /// Difference of numbers' modules
-newBigInt* moduleDiff(newBigInt *firstNumber, newBigInt *secondNumber) {
+newBigInt* moduleDiff(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem) {
     newBigInt *bigIntRes = NULL;
     bigIntRes = (newBigInt *) malloc(sizeof(newBigInt));
     int inMem = 0;
@@ -180,13 +180,13 @@ newBigInt* moduleDiff(newBigInt *firstNumber, newBigInt *secondNumber) {
 }
 
 /// Default "+" option
-newBigInt* plus(newBigInt *firstNumber, newBigInt *secondNumber) {
-    return plusMinus(firstNumber, secondNumber);
+newBigInt* plus(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem) {
+    return plusMinus(firstNumber, secondNumber, freeMem);
 }
 /// Default "-" option
-newBigInt* minus(newBigInt *firstNumber, newBigInt *secondNumber) {
+newBigInt* minus(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem) {
     secondNumber->isPositive = !secondNumber->isPositive;
-    return plusMinus(firstNumber, secondNumber);
+    return plusMinus(firstNumber, secondNumber, freeMem);
 }
 
 

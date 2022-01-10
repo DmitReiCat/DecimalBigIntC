@@ -17,10 +17,10 @@ newBigInt* constructBigIntFromReversedList(listOfInt *list);
 char* bigIntToString(newBigInt *this);
 int bigIntToInt(newBigInt *this);
 
-newBigInt* moduleSum(newBigInt *firstNumber, newBigInt *secondNumber);
-newBigInt* moduleDiff(newBigInt *firstNumber, newBigInt *secondNumber);
-newBigInt* plus(newBigInt *firstNumber, newBigInt *secondNumber);
-newBigInt* minus(newBigInt *firstNumber, newBigInt *secondNumber);
+newBigInt* moduleSum(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem);
+newBigInt* moduleDiff(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem);
+newBigInt* plus(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem);
+newBigInt* minus(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem);
 newBigInt *multiplyBigInts(newBigInt *firstNumber, newBigInt *secondNumber);
 
 
