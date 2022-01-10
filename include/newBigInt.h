@@ -9,8 +9,8 @@ typedef struct BigInteger {
     int size;
     int digitCount;
     int *numberPtr;
-    int sign; //todo for combined
 } newBigInt;
+
 newBigInt* constructBigIntFromInt(int integer);
 newBigInt* constructBigIntFromStr(char string[]);
 newBigInt* constructBigIntFromReversedList(listOfInt *list);

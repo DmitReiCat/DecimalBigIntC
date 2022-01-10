@@ -23,20 +23,6 @@ int digitCount(int number) {
 }
 
 
-void reverse(newBigInt *this) {
-    int start = 0;
-    int end = this->size - 1;
-    int temp;
-    while (start < end) {
-        temp = *(this->numberPtr + start);
-        *(this->numberPtr + start) = *(this->numberPtr + end);
-        *(this->numberPtr + end) = temp;
-        start++;
-        end--;
-    }
-}
-
-
 // deletes extra zeros without changing digitCount
 void deleteExtraZeroBlocks(newBigInt *this) {
     int firstNonZeroBlock = 0;
@@ -68,17 +54,6 @@ void insertToZeroBlock(newBigInt *this, int number) {
     } else {
         insertAndSetZeroBlock(this, number);
     }
-}
-
-
-void appendEmptyBlock(newBigInt *this) {
-    this->size += 1;
-    this->digitCount += 8;
-    this->numberPtr = realloc(this->numberPtr, (this->size) * sizeof(int));
-}
-void appendBlock(newBigInt *this, int number) {
-    appendEmptyBlock(this);
-    *(this->numberPtr + this->size - 1) = number;
 }
 
 
@@ -116,16 +91,6 @@ int blockSubtraction(int firstBlock, int secondBlock, int *inMem) {
     }
 }
 
-int blockMultiplication(int firstBlock, int secondBlock, int *inMem) {
-    int tempRes = firstBlock * secondBlock + *inMem;
-    if (tempRes >= 100000000) {
-        *inMem = tempRes / 100000000;
-        return tempRes % 100000000;
-    } else {
-        *inMem = 0;
-        return tempRes;
-    }
-}
 
 /// Choice of actions on BigInt modules
 newBigInt* plusMinus(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem) {

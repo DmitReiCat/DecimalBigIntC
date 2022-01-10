@@ -1,12 +1,9 @@
 #include <assert.h>
-#include <corecrt_malloc.h>
 #include <stdio.h>
-//#include "../include/bigInt.h"
 #include "../include/newBigInt.h"
 #include "../include/bigIntAssist.h"
-#include "../include/list.h"
 #include <string.h>
-#include <stdlib.h>
+
 
 
 void assertConstructInt(int number) {
@@ -52,10 +49,6 @@ void assertModuleSumFromInt(int firstNumber, int secondNumber) {
     newBigInt *secondBigNum = constructBigIntFromInt(secondNumber);
     newBigInt *result = moduleSum(firstBigNum, secondBigNum, true);
     printf("  //trying to %d + %d", firstNumber, secondNumber);
-//    printBigInt(result);
-//    printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
-//    printBigInt(result);
-//    printf("result = %d, bigNum = %d", firstNumber+ secondNumber, bigIntToInt(result));
     assert(firstNumber + secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
     freeBigInt(result);
@@ -90,8 +83,6 @@ void assertModuleDiffFromInt(int firstNumber, int secondNumber) {
     printf("  //trying to %d - %d", firstNumber, secondNumber);
     assert(firstNumber - secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
-//    printBigInt(result);
-//    printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
     freeBigInt(result);
 }
 
@@ -115,8 +106,6 @@ void assertPlusFromInt(int firstNumber, int secondNumber) {
     printf("  //trying to %d + %d", firstNumber, secondNumber);
     assert(firstNumber + secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
-//    printBigInt(result);
-//    printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
     freeBigInt(result);
 }
 
@@ -160,8 +149,6 @@ void assertMultiplication(int firstNumber, int secondNumber) {
     newBigInt *secondBigNum = constructBigIntFromInt(secondNumber);
     newBigInt *result = multiplyBigInts(firstBigNum, secondBigNum);
     printf("  //trying to %d * %d", firstNumber, secondNumber);
-//    printBigInt(result);                                                                                                        //Debug
-//    printf("size= %d, digitCount= %d\n, compare to %d", result->size, result->digitCount, firstNumber * secondNumber);   //Debug
     assert(firstNumber * secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
     freeBigInt(firstBigNum);
@@ -215,21 +202,10 @@ void multiplicationTests() {
 }
 
 void assistTest() {
-//    printf("test fromInt\n");
     newBigInt *bigNum = constructBigIntFromStr("1");
     printBigInt(bigNum);
     deleteExtraZeroBlocks(bigNum);
     printBigInt(bigNum);
-
-//    printf("test insertAndSetZeroBlock\n");
-//    newBigInt *bigNum = constructBigIntFromStr("99999999999999999");
-//    insertToZeroBlock(bigNum, 687);
-//    printBigInt(bigNum);
-//    printf("digitCount = %d\n", digitCount(0));
-//    printf("digitCount = %d\n", digitCount(10));
-//    printf("digitCount = %d\n", digitCount(20));
-//    printf("digitCount = %d\n", digitCount(99));
-//    printf("digitCount = %d\n", digitCount(999999));
     freeBigInt(bigNum);
 }
 

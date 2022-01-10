@@ -1,8 +1,6 @@
 #include "../include/list.h"
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "stdbool.h"
 listOfInt* constructEmptyList() {
     listOfInt *resList = NULL;
     resList = (listOfInt*)malloc(sizeof(listOfInt));

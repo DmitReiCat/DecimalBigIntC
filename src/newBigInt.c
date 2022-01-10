@@ -1,10 +1,8 @@
 #include "../include/newBigInt.h"
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include "stdbool.h"
 #include "../include/bigIntAssist.h"
-#include "../include/list.h"
 #include <math.h>
 
 //TODO delete digitCount dependency
@@ -21,14 +19,10 @@ newBigInt* constructBigIntFromInt(int integer) {
         integer *= -1;
     }
 
-
     int digitsCounted = digitCount(integer);
     bigIntRes->size = digitsCounted / 8;
     if (digitsCounted % 8 != 0) bigIntRes->size++;
     bigIntRes->digitCount = digitsCounted;
-
-
-
     bigIntRes->numberPtr = (int*)calloc(bigIntRes->size, sizeof(int));
 
     int arrIndex = 0;
@@ -88,13 +82,10 @@ newBigInt* constructBigIntFromStr(char string[]) {
     int startIndex = 1;
     if (string[0] == '-') {
         bigIntRes->isPositive = false;
-        bigIntRes->sign = -1;
     } else if (string[0] == '+') {
         bigIntRes->isPositive = true;
-        bigIntRes->sign = 1;
     } else {
         bigIntRes->isPositive = true;
-        bigIntRes->sign = 1;
         bigIntRes->size = strSize / 8;
         if (strSize % 8 != 0) bigIntRes->size += 1;
         bigIntRes->digitCount = (int)strlen(string);
