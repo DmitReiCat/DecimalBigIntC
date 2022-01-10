@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include "../include/bigInt.h"
 #include "../include/newBigInt.h"
 #include "../include/bigIntAssist.h"
 
@@ -18,11 +17,11 @@ void sum(char *ipath, char *opath) {
         exit(1);
     }
 
-    newBigInt *sumRes = constructBigIntFromInt(0);
+    bigigInt *sumRes = constructBigIntFromInt(0);
     while (!feof(ifptr)) {
         int number;
         fscanf(ifptr, "%d", &number);
-        newBigInt *bigNum = constructBigIntFromInt(number);
+        bigigInt *bigNum = constructBigIntFromInt(number);
         sumRes = plus(sumRes, bigNum, true);
     }
 

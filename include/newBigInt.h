@@ -9,19 +9,22 @@ typedef struct BigInteger {
     int size;
     int digitCount;
     int *numberPtr;
-} newBigInt;
+} bigigInt;
 
-newBigInt* constructBigIntFromInt(int integer);
-newBigInt* constructBigIntFromStr(char string[]);
-newBigInt* constructBigIntFromReversedList(listOfInt *list);
-char* bigIntToString(newBigInt *this);
-int bigIntToInt(newBigInt *this);
+bigigInt* constructBigIntFromInt(int integer);
+bigigInt* constructBigIntFromStr(char string[]);
+bigigInt* constructBigIntFromReversedList(listOfInt *list);
+bigigInt* constructBigIntFromList(listOfInt *list);
+char* bigIntToString(bigigInt *this);
+int bigIntToInt(bigigInt *this);
 
-newBigInt* moduleSum(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem);
-newBigInt* moduleDiff(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem);
-newBigInt* plus(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem);
-newBigInt* minus(newBigInt *firstNumber, newBigInt *secondNumber, bool freeMem);
-newBigInt *multiplyBigInts(newBigInt *firstNumber, newBigInt *secondNumber);
+bigigInt* moduleSum(bigigInt *firstNumber, bigigInt *secondNumber, bool freeMem);
+bigigInt* moduleDiff(bigigInt *firstNumber, bigigInt *secondNumber, bool freeMem);
+bigigInt* plus(bigigInt *firstNumber, bigigInt *secondNumber, bool freeMem);
+bigigInt* minus(bigigInt *firstNumber, bigigInt *secondNumber, bool freeMem);
+bigigInt *multiplyBigInts(bigigInt *firstNumber, bigigInt *secondNumber, bool freeMem);
+bigigInt *divisionProcess(bigigInt *nomerator, bigigInt *denominator, bool onlyRemains);
+int compareTo(bigigInt *this, bigigInt *other);
 
 
 #endif //UNTITLED_NEWBIGINT_H

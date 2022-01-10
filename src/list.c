@@ -39,6 +39,22 @@ void freeList(listOfInt *this) {
     free(this);
 }
 
+/// ">" --> 1, "==" --> 0, "<" --> -1
+int compareLists(listOfInt *this, listOfInt *other) {
+    if (this->size > other->size ) return 1;
+    else if (this->size < other->size) return -1;
+    else {
+        for (int index = this->size; index > 0; index--) {
+            int thisDigit = *(this->numberPtr + this->size - 1);
+            int otherDigit = *(other->numberPtr + other->size - 1);
+
+            if (thisDigit > otherDigit) return 1;
+            else if (thisDigit < otherDigit) return -1;
+        }
+    }
+    return 0;
+}
+
 void reverseList(listOfInt *this) {
     int start = 0;
     int end = this->size - 1;
