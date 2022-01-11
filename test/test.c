@@ -277,7 +277,11 @@ void assistTest() {
 
 
 int main() {
-
+    listOfInt *testList = constructEmptyList();
+    listAddReversed(testList,0,1000000000);
+    listAddReversed(testList,1,20);
+    reverseList(testList);
+    listPrint(testList);
 
     assistTest();
     constructAndToStringTest();

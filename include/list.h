@@ -6,11 +6,11 @@ typedef struct ListOfInt {
 } listOfInt;
 
 listOfInt* constructEmptyList();
-void listAppend(listOfInt *this, int item);
 void  listPrint(listOfInt *this);
 void freeList(listOfInt *this);
 void reverseList(listOfInt *this);
-void listAddReversed(listOfInt *this, int position, int number);
+void listAppend(listOfInt *this, long long int item);
+void listAddReversed(listOfInt *this, int position, long long int number);
 void removeZerosFromEnd(listOfInt *this);
 
 #endif //UNTITLED_LIST_H

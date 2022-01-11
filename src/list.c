@@ -9,16 +9,6 @@ listOfInt* constructEmptyList() {
     return resList;
 }
 
-void listAppend(listOfInt *this, int item) {
-    this->size += 1;
-    this->numberPtr = realloc(this->numberPtr, (this->size) * sizeof(int));
-    if (item < 10) *(this->numberPtr + this->size - 1 ) = item;
-    else {
-        *(this->numberPtr + this->size - 1 ) = item % 10;
-        listAppend(this, item / 10);
-    }
-}
-
 void removeZerosFromEnd(listOfInt *this) {
     while (*(this->numberPtr + this->size - 1) == 0) {
         this->size--;
@@ -39,6 +29,19 @@ void freeList(listOfInt *this) {
     free(this);
 }
 
+void reverseList(listOfInt *this) {
+    int start = 0;
+    int end = this->size - 1;
+    int temp;
+    while (start < end) {
+        temp = *(this->numberPtr + start);
+        *(this->numberPtr + start) = *(this->numberPtr + end);
+        *(this->numberPtr + end) = temp;
+        start++;
+        end--;
+    }
+}
+
 /// ">" --> 1, "==" --> 0, "<" --> -1
 int compareLists(listOfInt *this, listOfInt *other) {
     if (this->size > other->size ) return 1;
@@ -55,27 +58,23 @@ int compareLists(listOfInt *this, listOfInt *other) {
     return 0;
 }
 
-void reverseList(listOfInt *this) {
-    int start = 0;
-    int end = this->size - 1;
-    int temp;
-    while (start < end) {
-        temp = *(this->numberPtr + start);
-        *(this->numberPtr + start) = *(this->numberPtr + end);
-        *(this->numberPtr + end) = temp;
-        start++;
-        end--;
+void listAppend(listOfInt *this, long long int item) {
+    this->size += 1;
+    this->numberPtr = realloc(this->numberPtr, (this->size) * sizeof(int));
+    if (item < 100000000) *(this->numberPtr + this->size - 1 ) = (int)item;
+    else {
+        *(this->numberPtr + this->size - 1 ) = (int)(item % 100000000);
+        listAppend(this, item / 100000000);
     }
 }
 
-void listAddReversed(listOfInt *this, int position, int number) {
+void listAddReversed(listOfInt *this, int position, long long int number) {
     if (position < this->size) {
         int listDigit = *(this->numberPtr + position);
-        if (listDigit + number < 10) *(this->numberPtr + position) += number;
+        if (listDigit + number < 100000000) *(this->numberPtr + position) += (int)number;
         else {
-            int debug = (listDigit + number) % 10;
-            *(this->numberPtr + position) = (listDigit + number) % 10;
-            listAddReversed(this, position + 1, (listDigit + number) / 10);
+            *(this->numberPtr + position) = (int)((listDigit + number) % 100000000);
+            listAddReversed(this, position + 1, (listDigit + number) / 100000000);
         }
     } else {
         listAppend(this, number);

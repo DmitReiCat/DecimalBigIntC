@@ -57,7 +57,7 @@ void insertToZeroBlock(bigInt *this, int number) {
 
 
 void printBigInt(bigInt *this) {
-    printf("\n BigInt int= [");
+    printf("\n BigInt int= %d[", this->isPositive);
     for (int i = 0; i < this->size; i++) {
         printf("%d,", *(this->numberPtr + i));
     }
