@@ -1,0 +1,1 @@
+#define WORD_LENGTH 100000000

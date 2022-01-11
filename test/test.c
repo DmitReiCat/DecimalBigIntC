@@ -47,7 +47,7 @@ void constructAndToStringTest() {
 void assertModuleSumFromInt(int firstNumber, int secondNumber) {
     bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
     bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    bigInt *result = moduleSum(firstBigNum, secondBigNum, true);
+    bigInt *result = moduleUnited(firstBigNum, secondBigNum, true, true);
     printf("  //trying to %d + %d", firstNumber, secondNumber);
     assert(firstNumber + secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
@@ -64,7 +64,7 @@ void moduleSumTest() {
     // overflow from string test
     bigInt *firstBigNum = constructBigIntFromStr("999999999999999999999999");
     bigInt *secondBigNum = constructBigIntFromStr("999999999999999999999999");
-    bigInt *result = moduleSum(firstBigNum, secondBigNum, true);
+    bigInt *result = moduleUnited(firstBigNum, secondBigNum, true, true);
     printf("  //trying to %s", "999999999999999999999999 x2");
     printBigInt(result);
     printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
@@ -79,7 +79,7 @@ void moduleSumTest() {
 void assertModuleDiffFromInt(int firstNumber, int secondNumber) {
     bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
     bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    bigInt *result = moduleDiff(firstBigNum, secondBigNum, true);
+    bigInt *result = moduleUnited(firstBigNum, secondBigNum, false, true);
     printf("  //trying to %d - %d", firstNumber, secondNumber);
     assert(firstNumber - secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
@@ -201,7 +201,7 @@ void multiplicationTests() {
 void assertCompareTests(int firstNumber, int secondNumber) {
     bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
     bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    int res = compareTo(firstBigNum, secondBigNum);
+    int res = compareTo(firstBigNum, secondBigNum, false);
     int preRes;
     if (firstNumber > secondNumber) preRes = 1;
     else if (firstNumber == secondNumber) preRes = 0;
@@ -220,6 +220,9 @@ void compareTests() {
     assertCompareTests(50, 50);
     assertCompareTests(500, 50);
     assertCompareTests(500, 50000);
+    assertCompareTests(500, -50000);
+    assertCompareTests(-500, 50000);
+    assertCompareTests(-500, -50000);
 
     printf("compare testing successful!\n\n");
 }

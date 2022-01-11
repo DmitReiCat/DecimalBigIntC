@@ -3,6 +3,8 @@
 
 #include "newBigInt.h"
 
+
+
 int myPow(int x, int n);
 int digitCount(int number);
 void printBigInt(bigInt *this);
