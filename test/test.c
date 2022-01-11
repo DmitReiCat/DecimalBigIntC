@@ -7,14 +7,14 @@
 
 
 void assertConstructInt(int number) {
-    bigigInt *bigNum = constructBigIntFromInt(number);
+    bigInt *bigNum = constructBigIntFromInt(number);
     assert(number == bigIntToInt(bigNum));
     printf("  //success on converting %d\n", number);
     freeBigInt(bigNum);
 }
 
 void assertConstructStr(char number[]) {
-    bigigInt *bigNum = constructBigIntFromStr(number);
+    bigInt *bigNum = constructBigIntFromStr(number);
     int preRes = strcmp(number, bigIntToString(bigNum));
     assert(0 == preRes);
     printf("  //success on converting %s\n", number);
@@ -45,9 +45,9 @@ void constructAndToStringTest() {
 
 
 void assertModuleSumFromInt(int firstNumber, int secondNumber) {
-    bigigInt *firstBigNum = constructBigIntFromInt(firstNumber);
-    bigigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    bigigInt *result = moduleSum(firstBigNum, secondBigNum, true);
+    bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
+    bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
+    bigInt *result = moduleSum(firstBigNum, secondBigNum, true);
     printf("  //trying to %d + %d", firstNumber, secondNumber);
     assert(firstNumber + secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
@@ -62,9 +62,9 @@ void moduleSumTest() {
     }
 
     // overflow from string test
-    bigigInt *firstBigNum = constructBigIntFromStr("999999999999999999999999");
-    bigigInt *secondBigNum = constructBigIntFromStr("999999999999999999999999");
-    bigigInt *result = moduleSum(firstBigNum, secondBigNum, true);
+    bigInt *firstBigNum = constructBigIntFromStr("999999999999999999999999");
+    bigInt *secondBigNum = constructBigIntFromStr("999999999999999999999999");
+    bigInt *result = moduleSum(firstBigNum, secondBigNum, true);
     printf("  //trying to %s", "999999999999999999999999 x2");
     printBigInt(result);
     printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
@@ -77,9 +77,9 @@ void moduleSumTest() {
 }
 
 void assertModuleDiffFromInt(int firstNumber, int secondNumber) {
-    bigigInt *firstBigNum = constructBigIntFromInt(firstNumber);
-    bigigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    bigigInt *result = moduleDiff(firstBigNum, secondBigNum, true);
+    bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
+    bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
+    bigInt *result = moduleDiff(firstBigNum, secondBigNum, true);
     printf("  //trying to %d - %d", firstNumber, secondNumber);
     assert(firstNumber - secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
@@ -100,9 +100,9 @@ void moduleDiffTest() {
 }
 
 void assertPlusFromInt(int firstNumber, int secondNumber) {
-    bigigInt *firstBigNum = constructBigIntFromInt(firstNumber);
-    bigigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    bigigInt *result = plus(firstBigNum, secondBigNum, true);
+    bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
+    bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
+    bigInt *result = plus(firstBigNum, secondBigNum, true);
     printf("  //trying to %d + %d", firstNumber, secondNumber);
     assert(firstNumber + secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
@@ -110,9 +110,9 @@ void assertPlusFromInt(int firstNumber, int secondNumber) {
 }
 
 void assertMinusFromInt(int firstNumber, int secondNumber) {
-    bigigInt *firstBigNum = constructBigIntFromInt(firstNumber);
-    bigigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    bigigInt *result = minus(firstBigNum, secondBigNum, true);
+    bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
+    bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
+    bigInt *result = minus(firstBigNum, secondBigNum, true);
     printf("  //trying to %d - %d", firstNumber, secondNumber);
     assert(firstNumber - secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
@@ -145,9 +145,9 @@ void plusMinusTests() {
 
 
 void assertMultiplication(int firstNumber, int secondNumber) {
-    bigigInt *firstBigNum = constructBigIntFromInt(firstNumber);
-    bigigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    bigigInt *result = multiplyBigInts(firstBigNum, secondBigNum, true);
+    bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
+    bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
+    bigInt *result = multiplyBigInts(firstBigNum, secondBigNum, true);
     printf("  //trying to %d * %d", firstNumber, secondNumber);
     assert(firstNumber * secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
@@ -155,9 +155,9 @@ void assertMultiplication(int firstNumber, int secondNumber) {
 }
 
 void assertMultiplicationFromString(char firstNumber[], char secondNumber[], char resultString[]) {
-    bigigInt *firstBigNum = constructBigIntFromStr(firstNumber);
-    bigigInt *secondBigNum = constructBigIntFromStr(secondNumber);
-    bigigInt *result = multiplyBigInts(firstBigNum, secondBigNum, true);
+    bigInt *firstBigNum = constructBigIntFromStr(firstNumber);
+    bigInt *secondBigNum = constructBigIntFromStr(secondNumber);
+    bigInt *result = multiplyBigInts(firstBigNum, secondBigNum, true);
     printf("  //trying to %s * %s", firstNumber, secondNumber);
     int preRes = strcmp(resultString, bigIntToString(result));
     assert(0 == preRes);
@@ -199,8 +199,8 @@ void multiplicationTests() {
 }
 
 void assertCompareTests(int firstNumber, int secondNumber) {
-    bigigInt *firstBigNum = constructBigIntFromInt(firstNumber);
-    bigigInt *secondBigNum = constructBigIntFromInt(secondNumber);
+    bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
+    bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
     int res = compareTo(firstBigNum, secondBigNum);
     int preRes;
     if (firstNumber > secondNumber) preRes = 1;
@@ -224,8 +224,51 @@ void compareTests() {
     printf("compare testing successful!\n\n");
 }
 
+void assertDivisionOnlyRemains(int firstNumber, int secondNumber) {
+    bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
+    bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
+    bigInt *result = bigIntMod(firstBigNum, secondBigNum, true);
+    printf("  //trying to %d mod %d", firstNumber, secondNumber, firstNumber % secondNumber);
+    assert(firstNumber % secondNumber == bigIntToInt(result));
+    printf("  (yoshi!)\n");
+    freeBigInt(result);
+}
+
+void assertDivisionOnlyRemainsFalse(int firstNumber, int secondNumber) {
+    bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
+    bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
+    bigInt *result = bigIntDiv(firstBigNum, secondBigNum, false);
+    printf("  //trying to %d div %d", firstNumber, secondNumber);
+    assert(firstNumber / secondNumber == bigIntToInt(result));
+    printf("  (yoshi!)\n");
+    freeBigInt(result);
+}
+
+
+void divisionTests() {
+    printf("division testing...\n");
+    for (int number = 1; number <= 1000000000; number *= 10) {
+        assertDivisionOnlyRemains(number, -10);
+    }
+    for (int number = 1; number <= 1000000000; number *= 10) {
+        assertDivisionOnlyRemains(-1000, number);
+    }
+    for (int number = 1; number <= 1000000000; number *= 10) {
+        assertDivisionOnlyRemainsFalse(number, -10);
+    }
+    for (int number = 1; number <= 1000000000; number *= 10) {
+        assertDivisionOnlyRemainsFalse(-1000, number);
+    }
+    assertDivisionOnlyRemains(934275, 3289);
+    assertDivisionOnlyRemainsFalse(934275, 3289);
+
+
+    printf("division testing successful\n");
+}
+
+
 void assistTest() {
-    bigigInt *bigNum = constructBigIntFromStr("1");
+    bigInt *bigNum = constructBigIntFromStr("1");
     printBigInt(bigNum);
     deleteExtraZeroBlocks(bigNum);
     printBigInt(bigNum);
@@ -234,22 +277,6 @@ void assistTest() {
 
 
 int main() {
-    printf("division testing...\n");
-    listOfInt *myList = constructEmptyList();
-    listAppend(myList, 12345678);
-    listPrint(myList);
-    bigigInt *bigNum = constructBigIntFromList(myList);
-    appendBigIntByDigit(bigNum, 9);
-    printBigInt(bigNum);
-    bigigInt *bigNum2 = constructBigIntFromInt(9);
-    bigigInt *bigRes = divisionProcess(bigNum, bigNum2, true);
-    printBigInt(bigRes);
-//    bigNum = plus(bigNum, bigNum2, true);
-//    printBigInt(bigNum);
-    freeBigInt(bigNum);
-    freeBigInt(bigNum2);
-    printf("division testing successful\n");
-
 
 
     assistTest();
@@ -259,5 +286,6 @@ int main() {
     plusMinusTests();
     multiplicationTests();
     compareTests();
+    divisionTests();
     return 0;
 }

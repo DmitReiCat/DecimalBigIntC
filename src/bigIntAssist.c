@@ -23,7 +23,7 @@ int digitCount(int number) {
 
 
 // deletes extra zeros without changing digitCount
-void deleteExtraZeroBlocks(bigigInt *this) {
+void deleteExtraZeroBlocks(bigInt *this) {
     int firstNonZeroBlock = 0;
     while (firstNonZeroBlock < this->size - 1 && *(this->numberPtr + firstNonZeroBlock) == 0) firstNonZeroBlock++;
     for (int blockIndex = 0; blockIndex < firstNonZeroBlock; blockIndex++) {
@@ -36,7 +36,7 @@ void deleteExtraZeroBlocks(bigigInt *this) {
 
 
 // creates and sets new zero block with and an offset of the rest blocks
-void insertAndSetZeroBlock(bigigInt *this, int number) {
+void insertAndSetZeroBlock(bigInt *this, int number) {
     this->size += 1;
     this->numberPtr = realloc(this->numberPtr, (this->size) * sizeof(int));
     for (int index = this -> size - 1; index > 0; index--) {
@@ -46,7 +46,7 @@ void insertAndSetZeroBlock(bigigInt *this, int number) {
     this->digitCount += 8;
 }
 // inserts number to the beginning of the BigInt       // guaranteed safety for only one digit
-void insertToZeroBlock(bigigInt *this, int number) {
+void insertToZeroBlock(bigInt *this, int number) {
     if (this->digitCount % 8 != 0) {
         *(this->numberPtr) += number * myPow(10, digitCount(*(this->numberPtr)));
         this->digitCount += 1;
@@ -56,7 +56,7 @@ void insertToZeroBlock(bigigInt *this, int number) {
 }
 
 
-void printBigInt(bigigInt *this) {
+void printBigInt(bigInt *this) {
     printf("\n BigInt int= [");
     for (int i = 0; i < this->size; i++) {
         printf("%d,", *(this->numberPtr + i));
@@ -64,16 +64,16 @@ void printBigInt(bigigInt *this) {
     printf("_]\n");
 }
 
-void appendBigIntByDigit(bigigInt *this, int digit) {
+bigInt* appendBigIntByDigit(bigInt *this, int digit) {
     if (this->numberPtr == NULL) {
         freeBigInt(this);
-        this = constructBigIntFromInt(digit);
+        return constructBigIntFromInt(digit);
     } else {
-        bigigInt *bigInt10 = constructBigIntFromInt(10);
-        bigigInt *bigDigit = constructBigIntFromInt(digit);
-        bigigInt *preRes = multiplyBigInts(this, bigInt10, true);
-        bigigInt *res = plus(preRes, bigDigit, true);
-        this = res;
+        bigInt *bigInt10 = constructBigIntFromInt(10);
+        bigInt *bigDigit = constructBigIntFromInt(digit);
+        bigInt *preRes = multiplyBigInts(this, bigInt10, true);
+        bigInt *res = plus(preRes, bigDigit, true);
+        return res;
     }
 };
 
@@ -105,24 +105,35 @@ int blockSubtraction(int firstBlock, int secondBlock, int *inMem) {
 
 
 /// Choice of actions on BigInt modules
-bigigInt* plusMinus(bigigInt *firstNumber, bigigInt *secondNumber, bool freeMem) {
-    bigigInt *longerNumber;
-    bigigInt *shorterNumber;
+bigInt* plusMinus(bigInt *firstNumber, bigInt *secondNumber, bool isMinus, bool freeMem) {
+
+    bigInt *longerNumber;
+    bigInt *shorterNumber;
+
+    bigInt *result;
+    bool sign;
     if (firstNumber->digitCount >= secondNumber->digitCount) {
+        sign = firstNumber->isPositive;
         longerNumber = firstNumber;
         shorterNumber = secondNumber;
     } else {
+        sign = ((secondNumber->isPositive && !isMinus) || (!secondNumber->isPositive && isMinus));
         longerNumber = secondNumber;
         shorterNumber = firstNumber;
     }
 
-    bigigInt *result;
-    if (longerNumber->isPositive == shorterNumber->isPositive) result = moduleSum(longerNumber, shorterNumber, false);
+    int operation = 0;
+    if (firstNumber->isPositive) operation++;
+    if (secondNumber->isPositive) operation++;
+    if (isMinus) operation++;
+    operation %= 2;
+    if (operation == 0) result = moduleSum(longerNumber, shorterNumber, false);
     else result = moduleDiff(longerNumber, shorterNumber, false);
-    result->isPositive = longerNumber->isPositive;
+
+    result->isPositive = sign;
     if (freeMem == true) {
-        freeBigInt(firstNumber);
-        freeBigInt(secondNumber);
+        freeBigInt(longerNumber);
+        freeBigInt(shorterNumber);
     }
     return result;
 }

@@ -5,15 +5,15 @@
 
 int myPow(int x, int n);
 int digitCount(int number);
-void printBigInt(bigigInt *this);
-void insertAndSetZeroBlock(bigigInt *this, int number);
-void insertToZeroBlock(bigigInt *this, int number);
-void freeBigInt(bigigInt *this);
-void deleteExtraZeroBlocks(bigigInt *this);
-void appendBigIntByDigit(bigigInt *this, int digit);
+void printBigInt(bigInt *this);
+void insertAndSetZeroBlock(bigInt *this, int number);
+void insertToZeroBlock(bigInt *this, int number);
+void freeBigInt(bigInt *this);
+void deleteExtraZeroBlocks(bigInt *this);
+bigInt* appendBigIntByDigit(bigInt *this, int digit);
 
 int blockSum(int firstBlock, int secondBlock, int *inMem);
 int blockSubtraction(int firstBlock, int secondBlock, int *inMem);
-bigigInt* plusMinus(bigigInt *firstNumber, bigigInt *secondNumber, bool freeMem);
+bigInt* plusMinus(bigInt *firstNumber, bigInt *secondNumber, bool isMinus, bool freeMem);
 
 #endif //UNTITLED_BIGINTASSIST_H

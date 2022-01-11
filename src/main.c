@@ -17,11 +17,11 @@ void sum(char *ipath, char *opath) {
         exit(1);
     }
 
-    bigigInt *sumRes = constructBigIntFromInt(0);
+    bigInt *sumRes = constructBigIntFromInt(0);
     while (!feof(ifptr)) {
         int number;
         fscanf(ifptr, "%d", &number);
-        bigigInt *bigNum = constructBigIntFromInt(number);
+        bigInt *bigNum = constructBigIntFromInt(number);
         sumRes = plus(sumRes, bigNum, true);
     }
 
