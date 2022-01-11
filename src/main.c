@@ -22,7 +22,10 @@ void sum(char *ipath, char *opath) {
         int number;
         fscanf(ifptr, "%d", &number);
         bigInt *bigNum = constructBigIntFromInt(number);
-        sumRes = plus(sumRes, bigNum, true);
+        bigInt *tmpRes;
+        tmpRes = plus(sumRes, bigNum);
+        freeBigInt(sumRes);
+        sumRes = tmpRes;
     }
 
     printf("\n sumRes= %s", bigIntToString(sumRes));
