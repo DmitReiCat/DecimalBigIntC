@@ -26,50 +26,18 @@ bigInt* constructBigIntFromInt(int integer) {
     bigIntRes->digitCount = digitsCounted;
     bigIntRes->numberPtr = (int*)calloc(bigIntRes->size, sizeof(int));
 
-    int arrIndex = 0;
-    int digitsToAdd = bigIntRes->digitCount % 8;
-    if (digitsToAdd == 0) digitsToAdd = 8;
-
-    for (int i = 0; i < digitsCounted; i++) {
-        int digit = (integer % myPow(10, digitsCounted - i) / myPow(10, digitsCounted - i - 1));
-        *(bigIntRes->numberPtr + arrIndex) *= 10;
-        *(bigIntRes->numberPtr + arrIndex) += digit;
-        digitsToAdd--;
-         if (digitsToAdd == 0) {
-            digitsToAdd = 8;
-            arrIndex++;
-        }
+    if (digitsCounted > 8) {
+        *(bigIntRes->numberPtr+ 1) = integer % 100000000;
+        *(bigIntRes->numberPtr) = integer / 100000000;
+    } else {
+        *(bigIntRes->numberPtr) = integer % 100000000;
     }
 
     return bigIntRes;
 }
-/// constructs bigInt from reversedList
-bigInt* constructBigIntFromReversedList(listOfInt *list) {
-    bigInt *bigIntRes = NULL;
-    bigIntRes = (bigInt*)malloc(sizeof(bigInt));
-    double size = ceil((double)list->size / 8.0);
-    bigIntRes->size = (int)size;
-    bigIntRes->digitCount = 0;
-    bigIntRes->numberPtr = (int*)calloc(bigIntRes->size, sizeof(int));
 
-
-    int numberPos = bigIntRes->size * 8 - list->size;
-    int blockPos = 0;
-    if (list->size % 8 == 0) blockPos = -1;
-    for (int listIndex = list->size - 1; listIndex >= 0 ; listIndex--) {
-        if (numberPos % 8 == 0) {
-            blockPos++;
-        }
-        *(bigIntRes->numberPtr + blockPos) *= 10;
-        *(bigIntRes->numberPtr + blockPos) += *(list->numberPtr + listIndex);
-        bigIntRes->digitCount++;
-        numberPos++;
-    }
-    freeList(list);
-    return bigIntRes;
-}
 /// constructs bigInt from List
-bigInt* constructBigIntFromList(listOfInt *list) {
+bigInt* constructBigIntFromList(listOfInt *list, bool freeMem) {
     bigInt *bigIntRes = NULL;
     bigIntRes = (bigInt*)malloc(sizeof(bigInt));
     bigIntRes->size = list->size;
@@ -82,23 +50,10 @@ bigInt* constructBigIntFromList(listOfInt *list) {
     }
     bigIntRes->digitCount -= 8 - digitCount(*(bigIntRes->numberPtr));
 
-//    int firstNonZero = 0;
-//    while(*(list->numberPtr + firstNonZero) == 0) firstNonZero++;
-//
-//    int numberPos = bigIntRes->size * 8 - list->size;
-//    int blockPos = 0;
-//    if (list->size % 8 == 0) blockPos = -1;
-//    for (int listIndex = firstNonZero; listIndex < list->size ; listIndex++) {
-//        if (numberPos % 8 == 0) {
-//            blockPos++;
-//        }
-//        *(bigIntRes->numberPtr + blockPos) *= 10;
-//        *(bigIntRes->numberPtr + blockPos) += *(list->numberPtr + listIndex);
-//        bigIntRes->digitCount++;
-//        numberPos++;
-//    }
+    if (freeMem) freeList(list);
     return bigIntRes;
 }
+
 /// constructs bigInt from string
 bigInt* constructBigIntFromStr(char string[]) {
     bigInt *bigIntRes = NULL;
@@ -248,7 +203,7 @@ bigInt *multiplyBigInts(bigInt *firstNumber, bigInt *secondNumber, bool freeMem)
         }
     }
     reverseList(reversedListRes);
-    bigInt *bigIntRes = constructBigIntFromList(reversedListRes);
+    bigInt *bigIntRes = constructBigIntFromList(reversedListRes, true);
     bigIntRes->isPositive = (firstNumber->isPositive == secondNumber->isPositive);
     if (freeMem) {
         freeBigInt(firstNumber);
@@ -256,9 +211,6 @@ bigInt *multiplyBigInts(bigInt *firstNumber, bigInt *secondNumber, bool freeMem)
     }
     return bigIntRes;
 }
-
-
-
 
 
 /// converts bigint to string
@@ -304,14 +256,14 @@ int bigIntToInt(bigInt *this) {
     return result;
 }
 
-bigInt *divisionProcess(bigInt *nomerator, bigInt *denominator, bool onlyRemains, bool freeMem) {
+bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains, bool freeMem) {
     bigInt *modRes = NULL;
     modRes = (bigInt *) malloc(sizeof(bigInt));
     modRes->size = 0;
     modRes->digitCount = 0;
     modRes->isPositive = true;
     modRes->numberPtr = NULL;
-    bool modSign = nomerator->isPositive;
+    bool modSign = nominator->isPositive;
 
     bigInt *divRes = NULL;
     divRes = (bigInt *) malloc(sizeof(bigInt));
@@ -319,17 +271,17 @@ bigInt *divisionProcess(bigInt *nomerator, bigInt *denominator, bool onlyRemains
     divRes->digitCount = 0;
     divRes->isPositive = true;
     divRes->numberPtr = NULL;
-    bool divSign = nomerator->isPositive == denominator->isPositive;
+    bool divSign = nominator->isPositive == denominator->isPositive;
 
     bool isFirstNonZeroMet = false;
 
-    int digitsToAddFromBlock = nomerator->digitCount % 8;
+    int digitsToAddFromBlock = nominator->digitCount % 8;
     if (digitsToAddFromBlock == 0) digitsToAddFromBlock = 8;
     int modTen = myPow(10, digitsToAddFromBlock);
     int divTen = myPow(10, digitsToAddFromBlock - 1);
 
-    for (int firstBlockIndex = 0; firstBlockIndex < nomerator->size; firstBlockIndex++, modTen = 100000000, divTen = 10000000, digitsToAddFromBlock = 8) {
-        int firstBlock = *(nomerator->numberPtr + firstBlockIndex);
+    for (int firstBlockIndex = 0; firstBlockIndex < nominator->size; firstBlockIndex++, modTen = 100000000, divTen = 10000000, digitsToAddFromBlock = 8) {
+        int firstBlock = *(nominator->numberPtr + firstBlockIndex);
         int comparisonRes = compareTo(modRes, denominator);
         for (int unusedDigitInBlock = digitsToAddFromBlock; unusedDigitInBlock > 0;) {
             while (comparisonRes < 0 && modTen >= 10) {
@@ -356,7 +308,7 @@ bigInt *divisionProcess(bigInt *nomerator, bigInt *denominator, bool onlyRemains
 
     if (freeMem) {
         freeBigInt(denominator);
-        freeBigInt(nomerator);
+        freeBigInt(nominator);
     }
     if (onlyRemains) {
         modRes->isPositive = modSign;

@@ -9,13 +9,6 @@ listOfInt* constructEmptyList() {
     return resList;
 }
 
-void removeZerosFromEnd(listOfInt *this) {
-    while (*(this->numberPtr + this->size - 1) == 0) {
-        this->size--;
-    }
-    this->numberPtr = realloc(this->numberPtr, (this->size) * sizeof(int));
-}
-
 void listPrint(listOfInt *this) {
     printf("\n listOf int= [");
     for (int i = 0; i < this->size; i++) {
@@ -40,22 +33,6 @@ void reverseList(listOfInt *this) {
         start++;
         end--;
     }
-}
-
-/// ">" --> 1, "==" --> 0, "<" --> -1
-int compareLists(listOfInt *this, listOfInt *other) {
-    if (this->size > other->size ) return 1;
-    else if (this->size < other->size) return -1;
-    else {
-        for (int index = this->size; index > 0; index--) {
-            int thisDigit = *(this->numberPtr + this->size - 1);
-            int otherDigit = *(other->numberPtr + other->size - 1);
-
-            if (thisDigit > otherDigit) return 1;
-            else if (thisDigit < otherDigit) return -1;
-        }
-    }
-    return 0;
 }
 
 void listAppend(listOfInt *this, long long int item) {

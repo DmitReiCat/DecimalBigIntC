@@ -22,7 +22,7 @@ int digitCount(int number) {
 }
 
 
-// deletes extra zeros without changing digitCount
+// deletes extra zeros
 void deleteExtraZeroBlocks(bigInt *this) {
     int firstNonZeroBlock = 0;
     while (firstNonZeroBlock < this->size - 1 && *(this->numberPtr + firstNonZeroBlock) == 0) firstNonZeroBlock++;
@@ -54,7 +54,6 @@ void insertToZeroBlock(bigInt *this, int number) {
         insertAndSetZeroBlock(this, number);
     }
 }
-
 
 void printBigInt(bigInt *this) {
     printf("\n BigInt int= %d[", this->isPositive);

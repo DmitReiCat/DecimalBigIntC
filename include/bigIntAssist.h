@@ -8,7 +8,6 @@ int digitCount(int number);
 void printBigInt(bigInt *this);
 void insertAndSetZeroBlock(bigInt *this, int number);
 void insertToZeroBlock(bigInt *this, int number);
-void freeBigInt(bigInt *this);
 void deleteExtraZeroBlocks(bigInt *this);
 bigInt* appendBigIntByDigit(bigInt *this, int digit);
 
