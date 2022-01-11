@@ -27,36 +27,18 @@ int digitCount(int number) {
 void deleteExtraZeroBlocks(bigInt *this) {
     int firstNonZeroBlock = 0;
     while (firstNonZeroBlock < this->size - 1 && this->numberPtr[firstNonZeroBlock] == 0) firstNonZeroBlock++;
-
     this->size -= firstNonZeroBlock;
-
-    int *tmpPtr = (int*)malloc((this->size) * sizeof(int));
-    memcpy(tmpPtr, this->numberPtr + firstNonZeroBlock, (this->size) * sizeof(int));
-
-//    for (int blockIndex = 0; blockIndex < firstNonZeroBlock; blockIndex++) {
-//        this->numberPtr[blockIndex] =  this->numberPtr[blockIndex + firstNonZeroBlock];
-//    }
+    memmove(this->numberPtr, this->numberPtr + firstNonZeroBlock, (this->size) * sizeof(int));
     this->digitCount -= 8 * firstNonZeroBlock;
     this->numberPtr = realloc(this->numberPtr, this->size * sizeof(int));
-
-    memcpy(this->numberPtr, tmpPtr, (this->size) * sizeof(int));
-    free(tmpPtr);
 }
 
 
 // creates and sets new zero block with and an offset of the rest blocks
 void insertAndSetZeroBlock(bigInt *this, int number) {
-
-    int *tmpPtr = (int*)malloc((this->size) * sizeof(int));
-    memcpy(tmpPtr, this->numberPtr, this->size * sizeof(int));
-
     this->size += 1;
     this->numberPtr = realloc(this->numberPtr, this->size * sizeof(int));
-//    for (int index = this -> size - 1; index > 0; index--) {
-//        this->numberPtr[index] = this->numberPtr[index - 1];
-//    }
-    memcpy(this->numberPtr + 1, tmpPtr, (this->size - 1) * sizeof(int));
-    free(tmpPtr);
+    memmove(this->numberPtr + 1, this->numberPtr, (this->size - 1) * sizeof(int));
     this->numberPtr[0] = number;
     this->digitCount += 8;
 }
@@ -85,8 +67,14 @@ bigInt* appendBigIntByDigit(bigInt *this, int digit) {
     } else {
         bigInt *bigInt10 = constructBigIntFromInt(10);
         bigInt *bigDigit = constructBigIntFromInt(digit);
-        bigInt *preRes = multiplyBigInts(this, bigInt10, true);
-        bigInt *res = plus(preRes, bigDigit, true);
+
+        bigInt *preRes = multiplyBigInts(this, bigInt10);
+        freeBigInt(this);
+        freeBigInt(bigInt10);
+
+        bigInt *res = plus(preRes, bigDigit);
+        freeBigInt(preRes);
+        freeBigInt(bigDigit);
         return res;
     }
 };
@@ -119,7 +107,7 @@ int blockSubtraction(int firstBlock, int secondBlock, int *inMem) {
 
 
 /// Choice of actions on BigInt modules
-bigInt* plusMinus(bigInt *firstNumber, bigInt *secondNumber, bool isMinus, bool freeMem) {
+bigInt* plusMinus(bigInt *firstNumber, bigInt *secondNumber, bool isMinus) {
     bigInt *longerNumber;
     bigInt *shorterNumber;
 
@@ -140,13 +128,9 @@ bigInt* plusMinus(bigInt *firstNumber, bigInt *secondNumber, bool isMinus, bool 
     if (secondNumber->isPositive) operation++;
     if (isMinus) operation++;
     operation %= 2;
-    if (operation == 0) result = moduleUnited(longerNumber, shorterNumber, true, false);
-    else result = moduleUnited(longerNumber, shorterNumber, false, false);
+    if (operation == 0) result = moduleUnited(longerNumber, shorterNumber, true);
+    else result = moduleUnited(longerNumber, shorterNumber, false);
 
     result->isPositive = sign;
-    if (freeMem == true) {
-        freeBigInt(longerNumber);
-        freeBigInt(shorterNumber);
-    }
     return result;
 }

@@ -36,7 +36,7 @@ bigInt* constructBigIntFromInt(int integer) {
 }
 
 /// constructs bigInt from List
-bigInt* constructBigIntFromList(listOfInt *list, bool freeMem) {
+bigInt* constructBigIntFromList(listOfInt *list) {
     bigInt *bigIntRes = NULL; bigIntRes = (bigInt*)malloc(sizeof(bigInt));
     bigIntRes->size = list->size;
     bigIntRes->digitCount = bigIntRes->size * 8;
@@ -48,7 +48,6 @@ bigInt* constructBigIntFromList(listOfInt *list, bool freeMem) {
     }
     bigIntRes->digitCount -= 8 - digitCount(bigIntRes->numberPtr[0]);
 
-    if (freeMem) freeList(list);
     return bigIntRes;
 }
 
@@ -117,7 +116,7 @@ int compareTo(bigInt *this, bigInt *other, bool onlyModules) {
 
 
 /// Sum and diff of numbers' modules
-bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum, bool freeMem) {
+bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum) {
     bigInt *bigIntRes = NULL; bigIntRes = (bigInt *) malloc(sizeof(bigInt));
     int inMem = 0;
 
@@ -145,25 +144,21 @@ bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum, bool
     } else
         deleteExtraZeroBlocks(bigIntRes);
     bigIntRes->digitCount -= 8 - digitCount(bigIntRes->numberPtr[0]);
-    if (freeMem == true) {
-        freeBigInt(firstNumber);
-        freeBigInt(secondNumber);
-    }
     return bigIntRes;
 }
 
 /// Default "+" option
-bigInt* plus(bigInt *firstNumber, bigInt *secondNumber, bool freeMem) {
-    return plusMinus(firstNumber, secondNumber,false, freeMem);
+bigInt* plus(bigInt *firstNumber, bigInt *secondNumber) {
+    return plusMinus(firstNumber, secondNumber,false);
 }
 /// Default "-" option
-bigInt* minus(bigInt *firstNumber, bigInt *secondNumber, bool freeMem) {
-    return plusMinus(firstNumber, secondNumber, true, freeMem);
+bigInt* minus(bigInt *firstNumber, bigInt *secondNumber) {
+    return plusMinus(firstNumber, secondNumber, true);
 }
 
 
 /// multiplication of bigInts
-bigInt *multiplyBigInts(bigInt *firstNumber, bigInt *secondNumber, bool freeMem) {
+bigInt *multiplyBigInts(bigInt *firstNumber, bigInt *secondNumber) {
     listOfInt *reversedListRes = constructEmptyList();
     int position = 0;
     int offset = 0;
@@ -177,12 +172,10 @@ bigInt *multiplyBigInts(bigInt *firstNumber, bigInt *secondNumber, bool freeMem)
         position++; offset = 0;
     }
     reverseList(reversedListRes);
-    bigInt *bigIntRes = constructBigIntFromList(reversedListRes, true);
+    bigInt *bigIntRes = constructBigIntFromList(reversedListRes);
     bigIntRes->isPositive = (firstNumber->isPositive == secondNumber->isPositive);
-    if (freeMem) {
-        freeBigInt(firstNumber);
-        freeBigInt(secondNumber);
-    }
+
+    freeList(reversedListRes);
     return bigIntRes;
 }
 
@@ -217,7 +210,6 @@ char* bigIntToString(bigInt *this) {
 
 /// converts bigint to string
 int bigIntToInt(bigInt *this) {
-    //TODO comparing for safe conversion
     int result = 0;
 
     for (int blockIndex = 0; blockIndex < this->size; blockIndex++) {
@@ -230,7 +222,7 @@ int bigIntToInt(bigInt *this) {
     return result;
 }
 
-bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains, bool freeMem) {
+bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains) {
     bigInt *modRes = NULL; modRes = (bigInt *) malloc(sizeof(bigInt));
     modRes->size = 0;
     modRes->digitCount = 0;
@@ -269,7 +261,10 @@ bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains
             if (comparisonRes >= 0) {
                 while (comparisonRes >= 0) {
                     isFirstNonZeroMet = true;
-                    modRes = moduleUnited(modRes, denominator, false, false);
+                    bigInt *tmpBigInt = NULL; tmpBigInt = (bigInt *) malloc(sizeof(bigInt));
+                    tmpBigInt = moduleUnited(modRes, denominator, false);
+                    freeBigInt(modRes);
+                    modRes = tmpBigInt;
                     counter++;
                     comparisonRes = compareTo(modRes, denominator, true);
                 }
@@ -279,10 +274,6 @@ bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains
         modTen = WORD_LENGTH; divTen = WORD_LENGTH / 10;
     }
 
-    if (freeMem) {
-        freeBigInt(denominator);
-        freeBigInt(nominator);
-    }
     if (onlyRemains) {
         modRes->isPositive = modSign;
         freeBigInt(divRes);
@@ -300,15 +291,15 @@ bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains
 
 
 /// div
-bigInt *bigIntDiv(bigInt *numerator, bigInt *denominator, bool freeMem) {
-    bigInt *res = divisionProcess(numerator, denominator, false, freeMem);
+bigInt *bigIntDiv(bigInt *numerator, bigInt *denominator) {
+    bigInt *res = divisionProcess(numerator, denominator, false);
     return res;
 }
 
 
 /// mod
-bigInt *bigIntMod(bigInt *numerator, bigInt *denominator, bool freeMem) {
-    bigInt *res = divisionProcess(numerator, denominator, true, freeMem);
+bigInt *bigIntMod(bigInt *numerator, bigInt *denominator) {
+    bigInt *res = divisionProcess(numerator, denominator, true);
     return res;
 }
 

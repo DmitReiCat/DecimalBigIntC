@@ -15,6 +15,6 @@ bigInt* appendBigIntByDigit(bigInt *this, int digit);
 
 int blockSum(int firstBlock, int secondBlock, int *inMem);
 int blockSubtraction(int firstBlock, int secondBlock, int *inMem);
-bigInt* plusMinus(bigInt *firstNumber, bigInt *secondNumber, bool isMinus, bool freeMem);
+bigInt* plusMinus(bigInt *firstNumber, bigInt *secondNumber, bool isMinus);
 
 #endif //UNTITLED_BIGINTASSIST_H

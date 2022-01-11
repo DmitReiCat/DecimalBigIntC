@@ -13,18 +13,19 @@ typedef struct BigInteger {
 
 bigInt* constructBigIntFromInt(int integer);
 bigInt* constructBigIntFromStr(char string[]);
-bigInt* constructBigIntFromList(listOfInt *list, bool freeMem);
+bigInt* constructBigIntFromList(listOfInt *list);
 char* bigIntToString(bigInt *this);
 int bigIntToInt(bigInt *this);
 void freeBigInt(bigInt *this);
 
-bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum, bool freeMem);
-bigInt* plus(bigInt *firstNumber, bigInt *secondNumber, bool freeMem);
-bigInt* minus(bigInt *firstNumber, bigInt *secondNumber, bool freeMem);
-bigInt *multiplyBigInts(bigInt *firstNumber, bigInt *secondNumber, bool freeMem);
-bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains, bool freeMem);
-bigInt *bigIntDiv(bigInt *numerator, bigInt *denominator, bool freeMem);
-bigInt *bigIntMod(bigInt *numerator, bigInt *denominator, bool freeMem);
+bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum);
+bigInt* plus(bigInt *firstNumber, bigInt *secondNumber);
+bigInt* minus(bigInt *firstNumber, bigInt *secondNumber);
+
+bigInt *multiplyBigInts(bigInt *firstNumber, bigInt *secondNumber);
+bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains);
+bigInt *bigIntDiv(bigInt *numerator, bigInt *denominator);
+bigInt *bigIntMod(bigInt *numerator, bigInt *denominator);
 int compareTo(bigInt *this, bigInt *other, bool onlyModules);
 
 
