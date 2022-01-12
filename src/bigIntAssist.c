@@ -128,8 +128,8 @@ bigInt* plusMinus(bigInt *firstNumber, bigInt *secondNumber, bool isMinus) {
     if (secondNumber->isPositive) operation++;
     if (isMinus) operation++;
     operation %= 2;
-    if (operation == 0) result = moduleUnited(longerNumber, shorterNumber, true, false);
-    else result = moduleUnited(longerNumber, shorterNumber, false, false);
+    if (operation == 0) result = moduleUnited(longerNumber, shorterNumber, true);
+    else result = moduleUnited(longerNumber, shorterNumber, false);
 
     result->isPositive = sign;
     return result;
