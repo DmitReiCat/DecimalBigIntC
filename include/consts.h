@@ -1,1 +1,2 @@
 #define WORD_LENGTH 100000000
+#define DIGITS_IN_BLOCK 8

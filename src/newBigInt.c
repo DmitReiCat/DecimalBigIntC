@@ -8,9 +8,19 @@
 
 
 
+bigInt* constructEmptyBigInt() {
+    bigInt *bigIntRes = (bigInt *) malloc(sizeof(bigInt));
+    bigIntRes->size = 0;
+    bigIntRes->digitCount = 0;
+    bigIntRes->isPositive = true;
+    bigIntRes->numberPtr = NULL;
+
+    return bigIntRes;
+}
+
 /// constructs bigInt from int
 bigInt* constructBigIntFromInt(int integer) {
-    bigInt *bigIntRes = NULL; bigIntRes = (bigInt*) malloc(sizeof(bigInt));
+    bigInt *bigIntRes = (bigInt *) malloc(sizeof(bigInt));
 
     if (integer >= 0) {
         bigIntRes->isPositive = true;
@@ -20,12 +30,12 @@ bigInt* constructBigIntFromInt(int integer) {
     }
 
     int digitsCounted = digitCount(integer);
-    bigIntRes->size = digitsCounted / 8;
-    if (digitsCounted % 8 != 0) bigIntRes->size++;
+    bigIntRes->size = digitsCounted / DIGITS_IN_BLOCK;
+    if (digitsCounted % DIGITS_IN_BLOCK != 0) bigIntRes->size++;
     bigIntRes->digitCount = digitsCounted;
     bigIntRes->numberPtr = (int*)calloc(bigIntRes->size, sizeof(int));
 
-    if (digitsCounted > 8) {
+    if (digitsCounted > DIGITS_IN_BLOCK) {
         bigIntRes->numberPtr[1] = integer % WORD_LENGTH;
         bigIntRes->numberPtr[0] = integer / WORD_LENGTH;
     } else {
@@ -37,27 +47,27 @@ bigInt* constructBigIntFromInt(int integer) {
 
 /// constructs bigInt from List
 bigInt* constructBigIntFromList(listOfInt *list) {
-    bigInt *bigIntRes = NULL; bigIntRes = (bigInt*)malloc(sizeof(bigInt));
+    bigInt *bigIntRes = (bigInt*)malloc(sizeof(bigInt));
     bigIntRes->size = list->size;
-    bigIntRes->digitCount = bigIntRes->size * 8;
+    bigIntRes->digitCount = bigIntRes->size * DIGITS_IN_BLOCK;
     bigIntRes->numberPtr = (int*)calloc(bigIntRes->size, sizeof(int));
 
     for (int listBlockIndex = 0; listBlockIndex < list->size; listBlockIndex++) {
         int listBlock = list->numberPtr[listBlockIndex];
         bigIntRes->numberPtr[listBlockIndex] = listBlock;
     }
-    bigIntRes->digitCount -= 8 - digitCount(bigIntRes->numberPtr[0]);
+    bigIntRes->digitCount -= DIGITS_IN_BLOCK - digitCount(bigIntRes->numberPtr[0]);
 
     return bigIntRes;
 }
 
 /// constructs bigInt from string
 bigInt* constructBigIntFromStr(char string[]) {
-    bigInt *bigIntRes = NULL; bigIntRes = (bigInt*) malloc(sizeof(bigInt));
+    bigInt *bigIntRes = (bigInt *) malloc(sizeof(bigInt));
 
     int strSize = (int)strlen(string);
-    bigIntRes->size = (strSize - 1) / 8;
-    if ((strSize - 1) % 8 != 0) bigIntRes->size += 1;
+    bigIntRes->size = (strSize - 1) / DIGITS_IN_BLOCK;
+    if ((strSize - 1) % DIGITS_IN_BLOCK != 0) bigIntRes->size += 1;
     bigIntRes->digitCount = strSize - 1;
 
     int startIndex = 1;
@@ -67,23 +77,23 @@ bigInt* constructBigIntFromStr(char string[]) {
         bigIntRes->isPositive = true;
     } else {
         bigIntRes->isPositive = true;
-        bigIntRes->size = strSize / 8;
-        if (strSize % 8 != 0) bigIntRes->size += 1;
+        bigIntRes->size = strSize / DIGITS_IN_BLOCK;
+        if (strSize % DIGITS_IN_BLOCK != 0) bigIntRes->size += 1;
         bigIntRes->digitCount = (int)strlen(string);
         startIndex = 0;
     }
     bigIntRes->numberPtr = (int*)calloc(bigIntRes->size, sizeof(int));
 
     int arrIndex = 0;
-    int digitsToAdd = bigIntRes->digitCount % 8;
-    if (digitsToAdd == 0) digitsToAdd = 8;
+    int digitsToAdd = bigIntRes->digitCount % DIGITS_IN_BLOCK;
+    if (digitsToAdd == 0) digitsToAdd = DIGITS_IN_BLOCK;
     for (int i = startIndex; i < (int)strlen(string); i++) {
         int digit = string[i] - '0';
         bigIntRes->numberPtr[arrIndex] *= 10;
         bigIntRes->numberPtr[arrIndex] += digit;
         digitsToAdd--;
         if (digitsToAdd == 0) {
-            digitsToAdd = 8;
+            digitsToAdd = DIGITS_IN_BLOCK;
             arrIndex++;
         }
     }
@@ -116,8 +126,8 @@ int compareTo(bigInt *this, bigInt *other, bool onlyModules) {
 
 
 /// Sum and diff of numbers' modules
-bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum) {
-    bigInt *bigIntRes = NULL; bigIntRes = (bigInt *) malloc(sizeof(bigInt));
+bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum, bool overwriteFirstNum) {
+    bigInt *bigIntRes = (bigInt *) malloc(sizeof(bigInt));
     int inMem = 0;
 
     bigIntRes->size = firstNumber->size;
@@ -131,20 +141,27 @@ bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum) {
         int secondBlock = secondNumber->numberPtr[blockIndex];
         if (isSum) bigIntRes->numberPtr[blockDiff + blockIndex] = blockSum(firstBlock, secondBlock, &inMem);
         else bigIntRes->numberPtr[blockDiff + blockIndex] = blockSubtraction(firstBlock, secondBlock, &inMem);
-        bigIntRes->digitCount += 8;
+        bigIntRes->digitCount += DIGITS_IN_BLOCK;
     }
     for (int blockIndex = blockDiff - 1; blockIndex >= 0; blockIndex--) {
         int block = firstNumber->numberPtr[blockIndex];
         if (isSum) bigIntRes->numberPtr[blockIndex] = blockSum(block, 0, &inMem);
         else bigIntRes->numberPtr[blockIndex] = blockSubtraction(block, 0, &inMem);
-        bigIntRes->digitCount += 8;
+        bigIntRes->digitCount += DIGITS_IN_BLOCK;
     }
     if (isSum) {
         if (inMem != 0) insertToZeroBlock(bigIntRes, inMem);
     } else
         deleteExtraZeroBlocks(bigIntRes);
-    bigIntRes->digitCount -= 8 - digitCount(bigIntRes->numberPtr[0]);
-    return bigIntRes;
+    bigIntRes->digitCount -= DIGITS_IN_BLOCK - digitCount(bigIntRes->numberPtr[0]);
+
+    if (overwriteFirstNum) {
+        freeBigInt(firstNumber);
+        firstNumber = bigIntRes;
+        return firstNumber;
+    } else {
+        return bigIntRes;
+    }
 }
 
 /// Default "+" option
@@ -188,8 +205,8 @@ char* bigIntToString(bigInt *this) {
     if (this->isPositive) result[0] = '+';
     else result[0] = '-';
 
-    int digitsToAdd = this->digitCount % 8;
-    if (digitsToAdd == 0) digitsToAdd = 8;
+    int digitsToAdd = this->digitCount % DIGITS_IN_BLOCK;
+    if (digitsToAdd == 0) digitsToAdd = DIGITS_IN_BLOCK;
     for (int blockIndex = 0; blockIndex < this->size; blockIndex++) {
         int number = this->numberPtr[blockIndex];
         for (int indexInBlock = 0; digitsToAdd > 0; indexInBlock++) {
@@ -199,7 +216,7 @@ char* bigIntToString(bigInt *this) {
             i++;
             digitsToAdd--;
         }
-        digitsToAdd = 8;
+        digitsToAdd = DIGITS_IN_BLOCK;
     }
     result = (char*) realloc(result, (i + 1) * sizeof(char));
     result[i] = '\0';
@@ -223,28 +240,20 @@ int bigIntToInt(bigInt *this) {
 }
 
 bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains) {
-    bigInt *modRes = NULL; modRes = (bigInt *) malloc(sizeof(bigInt));
-    modRes->size = 0;
-    modRes->digitCount = 0;
-    modRes->isPositive = true;
-    modRes->numberPtr = NULL;
+    bigInt *modRes = constructEmptyBigInt();
     bool modSign = nominator->isPositive;
 
-    bigInt *divRes = NULL; divRes = (bigInt *) malloc(sizeof(bigInt));
-    divRes->size = 0;
-    divRes->digitCount = 0;
-    divRes->isPositive = true;
-    divRes->numberPtr = NULL;
+    bigInt *divRes = constructEmptyBigInt();
     bool divSign = nominator->isPositive == denominator->isPositive;
 
     bool isFirstNonZeroMet = false;
 
-    int digitsToAddFromBlock = nominator->digitCount % 8;
-    if (digitsToAddFromBlock == 0) digitsToAddFromBlock = 8;
+    int digitsToAddFromBlock = nominator->digitCount % DIGITS_IN_BLOCK;
+    if (digitsToAddFromBlock == 0) digitsToAddFromBlock = DIGITS_IN_BLOCK;
     int modTen = myPow(10, digitsToAddFromBlock);
     int divTen = myPow(10, digitsToAddFromBlock - 1);
 
-    for (int firstBlockIndex = 0; firstBlockIndex < nominator->size; firstBlockIndex++, digitsToAddFromBlock = 8) {
+    for (int firstBlockIndex = 0; firstBlockIndex < nominator->size; firstBlockIndex++) {
         int firstBlock = nominator->numberPtr[firstBlockIndex];
         int comparisonRes = compareTo(modRes, denominator, true);
         for (int unusedDigitInBlock = digitsToAddFromBlock; unusedDigitInBlock > 0;) {
@@ -261,17 +270,14 @@ bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains
             if (comparisonRes >= 0) {
                 while (comparisonRes >= 0) {
                     isFirstNonZeroMet = true;
-                    bigInt *tmpBigInt = NULL; tmpBigInt = (bigInt *) malloc(sizeof(bigInt));
-                    tmpBigInt = moduleUnited(modRes, denominator, false);
-                    freeBigInt(modRes);
-                    modRes = tmpBigInt;
+                    modRes = moduleUnited(modRes, denominator, false, true);
                     counter++;
                     comparisonRes = compareTo(modRes, denominator, true);
                 }
                 divRes = appendBigIntByDigit(divRes, counter);
             }
         }
-        modTen = WORD_LENGTH; divTen = WORD_LENGTH / 10;
+        modTen = WORD_LENGTH; divTen = WORD_LENGTH / 10; digitsToAddFromBlock = DIGITS_IN_BLOCK;
     }
 
     if (onlyRemains) {

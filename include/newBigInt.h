@@ -10,7 +10,7 @@ typedef struct BigInteger {
     int digitCount;
     int *numberPtr;
 } bigInt;
-
+bigInt* constructEmptyBigInt();
 bigInt* constructBigIntFromInt(int integer);
 bigInt* constructBigIntFromStr(char string[]);
 bigInt* constructBigIntFromList(listOfInt *list);
@@ -18,7 +18,7 @@ char* bigIntToString(bigInt *this);
 int bigIntToInt(bigInt *this);
 void freeBigInt(bigInt *this);
 
-bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum);
+bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum, bool overwriteFirstNum);
 bigInt* plus(bigInt *firstNumber, bigInt *secondNumber);
 bigInt* minus(bigInt *firstNumber, bigInt *secondNumber);
 

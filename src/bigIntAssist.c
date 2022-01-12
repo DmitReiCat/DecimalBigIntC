@@ -29,7 +29,7 @@ void deleteExtraZeroBlocks(bigInt *this) {
     while (firstNonZeroBlock < this->size - 1 && this->numberPtr[firstNonZeroBlock] == 0) firstNonZeroBlock++;
     this->size -= firstNonZeroBlock;
     memmove(this->numberPtr, this->numberPtr + firstNonZeroBlock, (this->size) * sizeof(int));
-    this->digitCount -= 8 * firstNonZeroBlock;
+    this->digitCount -= DIGITS_IN_BLOCK * firstNonZeroBlock;
     this->numberPtr = realloc(this->numberPtr, this->size * sizeof(int));
 }
 
@@ -40,11 +40,11 @@ void insertAndSetZeroBlock(bigInt *this, int number) {
     this->numberPtr = realloc(this->numberPtr, this->size * sizeof(int));
     memmove(this->numberPtr + 1, this->numberPtr, (this->size - 1) * sizeof(int));
     this->numberPtr[0] = number;
-    this->digitCount += 8;
+    this->digitCount += DIGITS_IN_BLOCK;
 }
 // inserts number to the beginning of the BigInt       // guaranteed safety for only one digit
 void insertToZeroBlock(bigInt *this, int number) {
-    if (this->digitCount % 8 != 0) {
+    if (this->digitCount % DIGITS_IN_BLOCK != 0) {
         this->numberPtr[0] += number * myPow(10, digitCount(this->numberPtr[0]));
         this->digitCount += 1;
     } else {
@@ -128,8 +128,8 @@ bigInt* plusMinus(bigInt *firstNumber, bigInt *secondNumber, bool isMinus) {
     if (secondNumber->isPositive) operation++;
     if (isMinus) operation++;
     operation %= 2;
-    if (operation == 0) result = moduleUnited(longerNumber, shorterNumber, true);
-    else result = moduleUnited(longerNumber, shorterNumber, false);
+    if (operation == 0) result = moduleUnited(longerNumber, shorterNumber, true, false);
+    else result = moduleUnited(longerNumber, shorterNumber, false, false);
 
     result->isPositive = sign;
     return result;
