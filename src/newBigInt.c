@@ -126,7 +126,7 @@ int compareTo(bigInt *this, bigInt *other, bool onlyModules) {
 
 
 /// Sum and diff of numbers' modules
-bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum, bool overwriteFirstNum) {
+bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum) {
     bigInt *bigIntRes = (bigInt *) malloc(sizeof(bigInt));
     int inMem = 0;
 
@@ -155,13 +155,7 @@ bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum, bool
         deleteExtraZeroBlocks(bigIntRes);
     bigIntRes->digitCount -= DIGITS_IN_BLOCK - digitCount(bigIntRes->numberPtr[0]);
 
-    if (overwriteFirstNum) {
-        freeBigInt(firstNumber);
-        firstNumber = bigIntRes;
-        return firstNumber;
-    } else {
-        return bigIntRes;
-    }
+    return bigIntRes;
 }
 
 /// Default "+" option
@@ -270,7 +264,9 @@ bigInt *divisionProcess(bigInt *nominator, bigInt *denominator, bool onlyRemains
             if (comparisonRes >= 0) {
                 while (comparisonRes >= 0) {
                     isFirstNonZeroMet = true;
-                    modRes = moduleUnited(modRes, denominator, false, true);
+                    bigInt *tmpBigInt = moduleUnited(modRes, denominator, false);
+                    freeBigInt(modRes);
+                    modRes = tmpBigInt;
                     counter++;
                     comparisonRes = compareTo(modRes, denominator, true);
                 }

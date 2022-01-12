@@ -18,7 +18,7 @@ char* bigIntToString(bigInt *this);
 int bigIntToInt(bigInt *this);
 void freeBigInt(bigInt *this);
 
-bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum, bool overwriteFirstNum);
+bigInt* moduleUnited(bigInt *firstNumber, bigInt *secondNumber, bool isSum);
 bigInt* plus(bigInt *firstNumber, bigInt *secondNumber);
 bigInt* minus(bigInt *firstNumber, bigInt *secondNumber);
 

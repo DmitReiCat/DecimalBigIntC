@@ -49,7 +49,7 @@ void constructAndToStringTest() {
 void assertModuleSumFromInt(int firstNumber, int secondNumber) {
     bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
     bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    bigInt *result = moduleUnited(firstBigNum, secondBigNum, true, false);
+    bigInt *result = moduleUnited(firstBigNum, secondBigNum, true);
     printf("  //trying to %d + %d", firstNumber, secondNumber);
     assert(firstNumber + secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
@@ -69,7 +69,7 @@ void moduleSumTest() {
     // overflow from string test
     bigInt *firstBigNum = constructBigIntFromStr("999999999999999999999999");
     bigInt *secondBigNum = constructBigIntFromStr("999999999999999999999999");
-    bigInt *result = moduleUnited(firstBigNum, secondBigNum, true, false);
+    bigInt *result = moduleUnited(firstBigNum, secondBigNum, true);
     printf("  //trying to %s", "999999999999999999999999 x2");
     printBigInt(result);
     printf("size= %d, digitCount= %d\n", result->size, result->digitCount);
@@ -87,7 +87,7 @@ void moduleSumTest() {
 void assertModuleDiffFromInt(int firstNumber, int secondNumber) {
     bigInt *firstBigNum = constructBigIntFromInt(firstNumber);
     bigInt *secondBigNum = constructBigIntFromInt(secondNumber);
-    bigInt *result = moduleUnited(firstBigNum, secondBigNum, false, false);
+    bigInt *result = moduleUnited(firstBigNum, secondBigNum, false);
     printf("  //trying to %d - %d", firstNumber, secondNumber);
     assert(firstNumber - secondNumber == bigIntToInt(result));
     printf("  (yoshi!)\n");
